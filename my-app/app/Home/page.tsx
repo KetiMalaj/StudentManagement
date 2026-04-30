@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
+
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -43,7 +44,7 @@ export default function Home() {
       name,
       surname,
     });
-
+    
     const response = await axios.get("/api/student");
     setStudents(response.data);
 
@@ -73,6 +74,7 @@ export default function Home() {
     router.push('/auth/login');
   }
 
+  
   return (
     <div className="p-10">
       <div className="flex justify-between items-center">

@@ -21,6 +21,8 @@ model Student {
   id       Int    @id @default(autoincrement())
   name     String
   surname  String
+
+   @@unique([name, surname])
 }
 
 model Dean {

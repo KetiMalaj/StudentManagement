@@ -5,21 +5,34 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
+  //student
   const [showForm, setShowForm] = useState(false);
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const router = useRouter();
   const [students, setStudents] = useState<{ id: number; name: string; surname: string }[]>([]);
+  //dean
+  const [showDeanForm, setShowDeanForm] = useState(false);
+  const [deanName, setDeanName] = useState("");
+  const [deanSurname, setDeanSurname] = useState("");
+  const [deans, setDeans] = useState<{ id: number; name: string; surname: string }[]>([]);
 
   useEffect(() => {
-   axios
+  axios
     .get("/api/student")
     .then(function (response){
      setStudents(response.data);
    })
     .catch(function(error){
      console.log(error);
-    }
+    });
+  axios.get("/api/dean")
+    .then(function (response){
+     setDeans(response.data);
+   })
+    .catch(function(error){
+     console.log(error);
+     }
     )
   }, []);
 
@@ -39,6 +52,22 @@ export default function Home() {
     setShowForm(false);
   };
 
+  const handleDeanSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    await axios.post("/api/dean", {
+      name: deanName,
+      surname: deanSurname,
+    });
+
+    const response = await axios.get("/api/dean");
+    setDeans(response.data);
+
+    setDeanName("");
+    setDeanSurname("");
+    setShowDeanForm(false);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     router.push('/auth/login');
@@ -53,6 +82,34 @@ export default function Home() {
       >
         Add Student
       </button>
+      <button
+        onClick={() => setShowDeanForm(true)}
+        className="bg-blue-800 text-white px-4 py-2 rounded"
+      >
+        Add Dean
+      </button>
+      {showDeanForm && (
+        <form onSubmit={handleDeanSubmit} className="mt-5 space-y-4">
+          <input
+            placeholder="Dean Name"
+            className="border p-2"
+            value={deanName}
+            onChange={(e) => setDeanName(e.target.value)}
+          />
+          <input
+            placeholder="Dean Surname"
+            className="border p-2"
+            value={deanSurname}
+            onChange={(e) => setDeanSurname(e.target.value)}
+          />
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded"
+          >
+            Save Dean
+          </button>
+        </form>
+      )}
       {showForm && (
         <form onSubmit={handleSubmit} className="mt-5 space-y-4">
           <input
@@ -84,25 +141,57 @@ export default function Home() {
         Logout
       </button>
       </div>
-      <table border={1} style={{ width: "67%", textAlign: "left" }}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Surname</th>
-          </tr>
-        </thead>
+      <div className="mt-8 flex gap-10 items-start">
+  {/* STUDENT TABLE - LEFT */}
+  <div className="w-1/2">
+    <h2 className="text-xl font-bold mb-3">Students</h2>
 
-        <tbody>
-          {students.map((student) => (
-            <tr key={student.id}>
-              <td>{student.id}</td>
-              <td>{student.name}</td>
-              <td>{student.surname}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <table className="w-full text-left">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Surname</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {students.map((student) => (
+          <tr key={student.id}>
+            <td>{student.id}</td>
+            <td>{student.name}</td>
+            <td>{student.surname}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  {/* DEAN TABLE - RIGHT */}
+  <div className="w-1/2">
+    <h2 className="text-xl font-bold mb-3">Deans</h2>
+
+    <table className="w-full text-left">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Surname</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {deans.map((dean) => (
+          <tr key={dean.id}>
+            <td>{dean.id}</td>
+            <td>{dean.name}</td>
+            <td>{dean.surname}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
   );
 }

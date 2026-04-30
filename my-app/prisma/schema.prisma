@@ -22,3 +22,9 @@ model Student {
   name     String
   surname  String
 }
+
+model Dean {
+  id       Int    @id @default(autoincrement())
+  name     String
+  surname  String
+}

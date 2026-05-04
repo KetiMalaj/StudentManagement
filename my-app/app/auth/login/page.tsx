@@ -29,6 +29,7 @@ const Login = () => {
       })
       .then(function (response) {
         document.cookie = `token=${response.data.token}; path=/;`;
+        localStorage.setItem('token', response.data.token);
         router.push('/Home');
       })
       .catch(function (error) {

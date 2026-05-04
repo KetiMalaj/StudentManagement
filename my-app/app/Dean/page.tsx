@@ -10,6 +10,7 @@ export default function Home() {
   const [deanSurname, setDeanSurname] = useState("");
   const [deans, setDeans] = useState<{ id: number; name: string; surname: string }[]>([]);
   const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     axios.get("/api/dean")
@@ -38,11 +39,13 @@ export default function Home() {
   };
   const handleLogout = () => {
     localStorage.removeItem('token');
+    document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     router.push('/auth/login');
   }
   const HomeRedirect = () => {
     router.push('/Home');
   }
+  
     return (
     <div className="p-10">
   <div className="flex justify-between items-start">

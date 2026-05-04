@@ -39,6 +39,7 @@ export default function Home() {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     router.push('/auth/login');
   }
 

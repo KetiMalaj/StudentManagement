@@ -31,3 +31,10 @@ model Dean {
   surname  String
   @@unique([name, surname])
 }
+
+model Teacher {
+  id       Int    @id @default(autoincrement())
+  name     String
+  surname  String
+  @@unique([name, surname])
+}

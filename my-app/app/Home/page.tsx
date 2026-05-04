@@ -3,11 +3,15 @@ import { useRouter } from "next/navigation";
 export default function Home() {
 
   const router = useRouter();  
+  
   const goToStudents = () => {
     router.push("/Student");
   };
   const goToDeans = () => {
     router.push("/Dean");
+  };
+  const goToTeachers = () => {
+    router.push("/Teacher");
   };
 
 return (
@@ -32,6 +36,12 @@ return (
                 className="w-full bg-violet-800 text-white p-3 rounded-lg font-semibold hover:bg-white hover:text-violet-800 hover:border hover:border-violet-800 transition"
               >
                 Deans
+              </button>
+        <button
+                onClick={goToTeachers}
+                className="w-full bg-violet-800 text-white p-3 rounded-lg font-semibold hover:bg-white hover:text-violet-800 hover:border hover:border-violet-800 transition"
+              >
+                Teachers
               </button>
         </div>
       </div>

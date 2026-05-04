@@ -1,4 +1,5 @@
 import { prisma } from "@/app/lib/prisma";
+
 export async function POST(request: Request) {
     const { name, surname } = await request.json();
 
@@ -8,18 +9,19 @@ export async function POST(request: Request) {
         });
     }
 
-    const student = await prisma.student.create({
+    const teacher = await prisma.teacher.create({
         data: {
             name,
             surname
         },
     });
 
-    return new Response(JSON.stringify({ message: "Student created successfully" }), {
+    return new Response(JSON.stringify({ message: "Teacher created successfully" }), {
         status: 201,
     });
 }
+
 export async function GET() {
-        const fetchstudents = await prisma.student.findMany();
-        return Response.json(fetchstudents);
-        };
+        const fetchteachers = await prisma.teacher.findMany();
+        return Response.json(fetchteachers);
+};

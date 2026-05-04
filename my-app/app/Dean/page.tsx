@@ -40,6 +40,9 @@ export default function Home() {
     localStorage.removeItem('token');
     router.push('/auth/login');
   }
+  const HomeRedirect = () => {
+    router.push('/Home');
+  }
     return (
     <div className="p-10">
   <div className="flex justify-between items-start">
@@ -79,6 +82,12 @@ export default function Home() {
         </form>
       )}
     </div>
+    <button
+      onClick={HomeRedirect}
+      className="bg-blue-600 text-white px-4 py-2 rounded"
+    >
+      Home
+    </button>
     <button
       onClick={handleLogout}
       className="bg-red-600 text-white px-4 py-2 rounded"

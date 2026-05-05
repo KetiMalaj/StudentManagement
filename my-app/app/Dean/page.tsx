@@ -6,11 +6,12 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [showDeanForm, setShowDeanForm] = useState(false);
-  const [deanName, setDeanName] = useState("");
-  const [deanSurname, setDeanSurname] = useState("");
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
   const [deans, setDeans] = useState<{ id: number; name: string; surname: string }[]>([]);
+  const [editingDeanId, setEditingDeanId] = useState<number | null>(null);
   const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
+ 
 
   useEffect(() => {
     axios.get("/api/dean")
@@ -25,23 +26,51 @@ export default function Home() {
   const handleDeanSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await axios.post("/api/dean", {
-      name: deanName,
-      surname: deanSurname,
-    });
+    if (editingDeanId) {
+      await axios.put("/api/dean", {
+        id: editingDeanId,
+        name,
+        surname,
+      });
+    } else {
+      await axios.post("/api/dean", {
+        name,
+        surname,
+      });
+    }
 
     const response = await axios.get("/api/dean");
     setDeans(response.data);
 
-    setDeanName("");
-    setDeanSurname("");
+    setName("");
+    setSurname("");
+    setEditingDeanId(null);
     setShowDeanForm(false);
   };
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     router.push('/auth/login');
   }
+
+  const handleEditDean = (dean: { id: number; name: string; surname: string }) => {
+    setName(dean.name);
+    setSurname(dean.surname);
+    setEditingDeanId(dean.id);
+    setShowDeanForm(true);
+  }; 
+
+  const handleDeleteDean = async (id: number) => {
+    const confirmDelete = confirm("Are you sure you want to delete this dean?");
+    if (!confirmDelete) return;
+    await axios.delete("/api/dean", {
+      data: { id },
+    });
+    const response = await axios.get("/api/dean");
+    setDeans(response.data);
+  };
+
   const HomeRedirect = () => {
     router.push('/Home');
   }
@@ -65,15 +94,15 @@ export default function Home() {
           <input
             placeholder="Name"
             className="border p-2 rounded"
-            value={deanName}
-            onChange={(e) => setDeanName(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
 
           <input
             placeholder="Surname"
             className="border p-2 rounded"
-            value={deanSurname}
-            onChange={(e) => setDeanSurname(e.target.value)}
+            value={surname}
+            onChange={(e) => setSurname(e.target.value)}
           />
 
           <button
@@ -107,6 +136,7 @@ export default function Home() {
         <th>ID</th>
         <th>Name</th>
         <th>Surname</th>
+        <th>Actions</th>
       </tr>
     </thead>
 
@@ -116,6 +146,20 @@ export default function Home() {
           <td>{dean.id}</td>
           <td>{dean.name}</td>
           <td>{dean.surname}</td>
+          <td>
+            <button
+              onClick={() => handleEditDean(dean)}
+              className="bg-yellow-400 text-white px-3 py-1 rounded"
+            >
+              Edit
+            </button>
+            <button
+              onClick={() => handleDeleteDean(dean.id)}
+              className="bg-red-700 text-white px-3 py-1 rounded"
+            >
+              Delete
+            </button>
+          </td>
         </tr>
       ))}
     </tbody>

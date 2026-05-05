@@ -8,6 +8,7 @@ export default function Teacher() {
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
     const [teachers, setTeachers] = useState<{ id: number; name: string; surname: string }[]>([]);
+    const [editingTeacherId, setEditingTeacherId] = useState<number | null>(null);
     const router = useRouter();
 
     useEffect(() => {
@@ -20,17 +21,43 @@ export default function Teacher() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await axios.post("/api/teacher", {
-            name,
-            surname,
-        });
+        if (editingTeacherId) {
+            await axios.put("/api/teacher", {
+                id: editingTeacherId,
+                name,
+                surname,
+            });
+        } else {
+            await axios.post("/api/teacher", {
+                name,
+                surname,
+            });
+        }
 
         const response = await axios.get("/api/teacher");
         setTeachers(response.data);
 
         setName("");
         setSurname("");
+        setEditingTeacherId(null);
         setShowForm(false);
+    };
+
+    const handleEditTeacher = (teacher: { id: number; name: string; surname: string }) => {
+        setName(teacher.name);
+        setSurname(teacher.surname);
+        setEditingTeacherId(teacher.id);
+        setShowForm(true);
+    };
+
+    const handleDeleteTeacher = async (id: number) => {
+        const confirmDelete = confirm("Are you sure you want to delete this teacher?");
+        if (!confirmDelete) return;
+        await axios.delete("/api/teacher", {
+            data: { id },
+        });
+        const response = await axios.get("/api/teacher");
+        setTeachers(response.data);
     };
 
     const handleLogout = () => {
@@ -104,6 +131,7 @@ export default function Teacher() {
         <th>ID</th>
         <th>Name</th>
         <th>Surname</th>
+        <th>Actions</th>
       </tr>
     </thead>
 
@@ -113,6 +141,20 @@ export default function Teacher() {
           <td>{teacher.id}</td>
           <td>{teacher.name}</td>
           <td>{teacher.surname}</td>
+          <td>
+            <button
+              onClick={() => handleEditTeacher(teacher)}
+              className="bg-yellow-400 text-white px-3 py-1 rounded"
+            >
+              Edit
+            </button>
+            <button
+              onClick={() => handleDeleteTeacher(teacher.id)}
+              className="bg-red-700 text-white px-3 py-1 rounded"
+            >
+              Delete
+            </button>
+          </td>
         </tr>
       ))}
     </tbody>

@@ -9,6 +9,7 @@ export default function Home() {
   const [surname, setSurname] = useState("");
   const router = useRouter();
   const [students, setStudents] = useState<{ id: number; name: string; surname: string }[]>([]);
+  const [editingStudentId, setEditingStudentId] = useState<number | null>(null);
   
   useEffect(() => {
   axios
@@ -24,17 +25,42 @@ export default function Home() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await axios.post("/api/student", {
-      name,
-      surname,
-    });
+    if (editingStudentId) {
+      await axios.put("/api/student", {
+        id: editingStudentId,
+        name,
+        surname,
+      });
+    } else {
+      await axios.post("/api/student", {
+        name,
+        surname,
+      });
+    }
     
     const response = await axios.get("/api/student");
     setStudents(response.data);
 
     setName("");
     setSurname("");
+    setEditingStudentId(null);
     setShowForm(false);
+  };
+    const handleEditStudent = (student: { id: number; name: string; surname: string }) => {
+    setName(student.name);
+    setSurname(student.surname);
+    setEditingStudentId(student.id);
+    setShowForm(true);
+  };
+
+  const handleDeleteStudent = async (id: number) => {
+    const confirmDelete = confirm("Are you sure you want to delete this student?");
+    if (!confirmDelete) return;
+    await axios.delete("/api/student", {
+      data: { id },
+    });
+    const response = await axios.get("/api/student");
+    setStudents(response.data);
   };
 
   const handleLogout = () => {
@@ -109,6 +135,7 @@ export default function Home() {
         <th>ID</th>
         <th>Name</th>
         <th>Surname</th>
+        <th>Actions</th>
       </tr>
     </thead>
 
@@ -118,6 +145,20 @@ export default function Home() {
           <td>{student.id}</td>
           <td>{student.name}</td>
           <td>{student.surname}</td>
+          <td>
+            <button
+              onClick={() => handleEditStudent(student)}
+              className="bg-yellow-400 text-white px-3 py-1 rounded"
+            >
+              Edit
+            </button>
+            <button
+              onClick={() => handleDeleteStudent(student.id)}
+              className="bg-red-700 text-white px-3 py-1 rounded"
+            >
+              Delete
+            </button>
+          </td>
         </tr>
       ))}
     </tbody>

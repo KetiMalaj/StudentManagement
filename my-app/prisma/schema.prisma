@@ -20,6 +20,7 @@ model user{
 model Student {
   id       Int            @id @default(autoincrement())
   name     String
+  surname   String
   classes  StudentClass[]
 }
 

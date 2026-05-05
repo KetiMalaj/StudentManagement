@@ -17,11 +17,12 @@ model user{
   password  String
 }
 
-model Student {
+model student {
   id       Int            @id @default(autoincrement())
   name     String
   surname   String
   classes  StudentClass[]
+  @@unique([name, surname])
 }
 
 
@@ -53,7 +54,7 @@ model StudentClass {
   studentId Int
   classId   Int
 
-  student   Student     @relation(fields: [studentId], references: [id])
+  student   student     @relation(fields: [studentId], references: [id])
   class     Class @relation(fields: [classId], references: [id])
 
   @@id([studentId, classId])

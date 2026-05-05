@@ -18,16 +18,11 @@ model user{
 }
 
 model Student {
-  id       Int    @id @default(autoincrement())
+  id       Int            @id @default(autoincrement())
   name     String
-  surname  String
-
-   @@unique([name, surname])
-
-   classId   Int?
-   class Class? @relation(fields: [classId], references: [id])
-
+  classes  StudentClass[]
 }
+
 
 model Dean {
   id       Int    @id @default(autoincrement())
@@ -36,20 +31,29 @@ model Dean {
   @@unique([name, surname])
 }
 
-model Teacher {
-  id       Int    @id @default(autoincrement())
-  name     String
-  surname  String
-  @@unique([name, surname])
+model Teacher {                                                                                                                                               
+    id       Int    @id @default(autoincrement())                                                                                                           
+    name     String
+    surname  String
+    @@unique([name, surname])
 
-  classId   Int?
-  class Class? @relation(fields: [classId], references: [id])
-}
+    class Class?
+  }
 
 model Class {
-  id       Int    @id @default(autoincrement())
-  name     String
+  id        Int            @id @default(autoincrement())
+  name      String
+  teacherId Int @unique
+  teacher   Teacher @relation(fields: [teacherId], references: [id])
+  students  StudentClass[]
+}
 
-  students Student[]
-  teachers Teacher[]
+model StudentClass {
+  studentId Int
+  classId   Int
+
+  student   Student     @relation(fields: [studentId], references: [id])
+  class     Class @relation(fields: [classId], references: [id])
+
+  @@id([studentId, classId])
 }

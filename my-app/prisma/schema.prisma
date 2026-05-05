@@ -23,6 +23,10 @@ model Student {
   surname  String
 
    @@unique([name, surname])
+
+   classId   Int?
+   class Class? @relation(fields: [classId], references: [id])
+
 }
 
 model Dean {
@@ -37,4 +41,15 @@ model Teacher {
   name     String
   surname  String
   @@unique([name, surname])
+
+  classId   Int?
+  class Class? @relation(fields: [classId], references: [id])
+}
+
+model Class {
+  id       Int    @id @default(autoincrement())
+  name     String
+
+  students Student[]
+  teachers Teacher[]
 }

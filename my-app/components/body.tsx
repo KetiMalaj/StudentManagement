@@ -8,7 +8,7 @@ function Body() {
     router.push("Dashboard/Student");
   };
   const goToDeans = () => {
-    router.push("Dashboard/Dean");
+    router.push("Dashboard/dean");
   };
   const goToTeachers = () => {
     router.push("Dashboard/Teacher");

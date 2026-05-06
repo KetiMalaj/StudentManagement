@@ -1,14 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import Footer from "@/components/footer";
+import Header from "@/components/header";
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false);
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
-  const router = useRouter();
   const [students, setStudents] = useState<{ id: number; name: string; surname: string }[]>([]);
   const [editingStudentId, setEditingStudentId] = useState<number | null>(null);
   
@@ -63,74 +62,44 @@ export default function Home() {
     const response = await axios.get("/api/student");
     setStudents(response.data);
   };
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    router.push('/auth/login');
-  }
-
-  const HomeRedirect = () => {
-    router.push('/Home');
-  }
   
   return (
   <div className="min-h-screen bg-gray-100 flex flex-col">
+
     <main className="flex-1 p-10">
-      <div className="flex justify-between items-start">
-        <div>
-          <button
-            onClick={() => setShowForm(true)}
-            className="bg-violet-800 text-white px-4 py-2 rounded"
-          >
-            Add Student
-          </button>
+      
+      <Header 
+        addLabel="Add Student"
+        onAddClick={() => setShowForm(true)}
+      />
 
-          {showForm && (
-            <form
-              onSubmit={handleSubmit}
-              className="mt-5 flex flex-col gap-3 w-80"
-            >
-              <input
-                placeholder="Name"
-                className="border p-2 rounded"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
+      {showForm && (
+        <form
+          onSubmit={handleSubmit}
+          className="mt-5 flex flex-col gap-3 w-80"
+        >
+          <input
+            placeholder="Name"
+            className="border p-2 rounded"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
 
-              <input
-                placeholder="Surname"
-                className="border p-2 rounded"
-                value={surname}
-                onChange={(e) => setSurname(e.target.value)}
-              />
-
-              <button
-                type="submit"
-                className="bg-green-600 text-white px-4 py-2 rounded"
-              >
-                Save Student
-              </button>
-            </form>
-          )}
-        </div>
-
-        <div className="flex gap-3">
-          <button
-            onClick={HomeRedirect}
-            className="bg-blue-600 text-white px-4 py-2 rounded"
-          >
-            Home
-          </button>
+          <input
+            placeholder="Surname"
+            className="border p-2 rounded"
+            value={surname}
+            onChange={(e) => setSurname(e.target.value)}
+          />
 
           <button
-            onClick={handleLogout}
-            className="bg-red-600 text-white px-4 py-2 rounded"
+            type="submit"
+            className="bg-green-600 text-white px-4 py-2 rounded"
           >
-            Logout
+            Save Student
           </button>
-        </div>
-      </div>
+        </form>
+      )}
 
       <h2 className="text-xl font-bold mt-10 mb-4">Students</h2>
 
@@ -169,9 +138,11 @@ export default function Home() {
           ))}
         </tbody>
       </table>
+
     </main>
 
     <Footer />
+
   </div>
 );
 }

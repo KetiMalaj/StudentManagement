@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
-import Footer from "../../../components/footer";
+import Footer from "@/components/footer";
+import Header from "@/components/header";
 
 
 export default function Home() {
@@ -11,7 +11,7 @@ export default function Home() {
   const [surname, setSurname] = useState("");
   const [deans, setDeans] = useState<{ id: number; name: string; surname: string }[]>([]);
   const [editingDeanId, setEditingDeanId] = useState<number | null>(null);
-  const router = useRouter();
+  
  
 
   useEffect(() => {
@@ -49,11 +49,6 @@ export default function Home() {
     setShowDeanForm(false);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    router.push('/auth/login');
-  }
 
   const handleEditDean = (dean: { id: number; name: string; surname: string }) => {
     setName(dean.name);
@@ -72,22 +67,16 @@ export default function Home() {
     setDeans(response.data);
   };
 
-  const HomeRedirect = () => {
-    router.push('/Home');
-  }
+
   
     return (
   <div className="min-h-screen bg-gray-100 flex flex-col">
     <main className="flex-1 p-10">
-      <div className="flex justify-between items-start">
-        <div>
-          <button
-            onClick={() => setShowDeanForm(true)}
-            className="bg-violet-800 text-white px-4 py-2 rounded"
-          >
-            Add Dean
-          </button>
 
+      <Header 
+      addLabel= "Add Dean"
+      onAddClick={() => setShowDeanForm(true)}
+       />
           {showDeanForm && (
             <form
               onSubmit={handleDeanSubmit}
@@ -115,24 +104,7 @@ export default function Home() {
               </button>
             </form>
           )}
-        </div>
-
-        <div className="flex gap-3">
-          <button
-            onClick={HomeRedirect}
-            className="bg-blue-600 text-white px-4 py-2 rounded"
-          >
-            Home
-          </button>
-
-          <button
-            onClick={handleLogout}
-            className="bg-red-600 text-white px-4 py-2 rounded"
-          >
-            Logout
-          </button>
-        </div>
-      </div>
+        
 
       <h2 className="text-xl font-bold mt-10 mb-4">Deans</h2>
 

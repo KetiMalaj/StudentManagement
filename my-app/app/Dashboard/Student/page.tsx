@@ -13,7 +13,7 @@ export default function Home() {
   
   useEffect(() => {
   axios
-    .get("/api/student")
+    .get("/api/Dashboard/student")
     .then(function (response){
      setStudents(response.data);
    })
@@ -26,19 +26,19 @@ export default function Home() {
     e.preventDefault();
 
     if (editingStudentId) {
-      await axios.put("/api/student", {
+      await axios.put("/api/Dashboard/student", {
         id: editingStudentId,
         name,
         surname,
       });
     } else {
-      await axios.post("/api/student", {
+      await axios.post("/api/Dashboard/student", {
         name,
         surname,
       });
     }
     
-    const response = await axios.get("/api/student");
+    const response = await axios.get("/api/Dashboard/student");
     setStudents(response.data);
 
     setName("");
@@ -56,10 +56,10 @@ export default function Home() {
   const handleDeleteStudent = async (id: number) => {
     const confirmDelete = confirm("Are you sure you want to delete this student?");
     if (!confirmDelete) return;
-    await axios.delete("/api/student", {
+    await axios.delete("/api/Dashboard/student", {
       data: { id },
     });
-    const response = await axios.get("/api/student");
+    const response = await axios.get("/api/Dashboard/student");
     setStudents(response.data);
   };
   

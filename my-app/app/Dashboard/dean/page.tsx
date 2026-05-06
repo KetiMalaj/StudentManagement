@@ -15,7 +15,7 @@ export default function Home() {
  
 
   useEffect(() => {
-    axios.get("/api/dean")
+    axios.get("/api/Dashboard/dean")
       .then(function (response){
         setDeans(response.data);
       })
@@ -28,19 +28,19 @@ export default function Home() {
     e.preventDefault();
 
     if (editingDeanId) {
-      await axios.put("/api/dean", {
+      await axios.put("/api/Dashboard/dean", {
         id: editingDeanId,
         name,
         surname,
       });
     } else {
-      await axios.post("/api/dean", {
+      await axios.post("/api/Dashboard/dean", {
         name,
         surname,
       });
     }
 
-    const response = await axios.get("/api/dean");
+    const response = await axios.get("/api/Dashboard/dean");
     setDeans(response.data);
 
     setName("");
@@ -60,10 +60,10 @@ export default function Home() {
   const handleDeleteDean = async (id: number) => {
     const confirmDelete = confirm("Are you sure you want to delete this dean?");
     if (!confirmDelete) return;
-    await axios.delete("/api/dean", {
+    await axios.delete("/api/Dashboard/dean", {
       data: { id },
     });
-    const response = await axios.get("/api/dean");
+    const response = await axios.get("/api/Dashboard/dean");
     setDeans(response.data);
   };
 

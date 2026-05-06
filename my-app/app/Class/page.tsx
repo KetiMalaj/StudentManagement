@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Footer from "../components/footer";
 
 
 type Teacher = {
@@ -92,7 +93,8 @@ export default function Class() {
     }
 
     return (
-    <div className="p-10">
+  <div className="min-h-screen bg-gray-100 flex flex-col">
+    <main className="flex-1 p-10">
       <div className="flex justify-between items-start">
         <div>
           <button
@@ -141,19 +143,22 @@ export default function Class() {
             </form>
           )}
         </div>
-        <button
-          onClick={HomeRedirect}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          Home
-        </button>
 
-        <button
-          onClick={handleLogout}
-          className="bg-red-700 text-white px-4 py-2 rounded"
-        >
-          Logout
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={HomeRedirect}
+            className="bg-blue-600 text-white px-4 py-2 rounded"
+          >
+            Home
+          </button>
+
+          <button
+            onClick={handleLogout}
+            className="bg-red-700 text-white px-4 py-2 rounded"
+          >
+            Logout
+          </button>
+        </div>
       </div>
 
       <h2 className="text-2xl font-bold mt-10 mb-4">Classes</h2>
@@ -197,6 +202,9 @@ export default function Class() {
           ))}
         </tbody>
       </table>
-    </div>
-  );
+    </main>
+
+    <Footer />
+  </div>
+);
 }

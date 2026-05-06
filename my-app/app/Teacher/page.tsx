@@ -2,6 +2,7 @@
 import axios from "axios";
 import { useRouter } from "next/dist/client/components/navigation";
 import { useEffect, useState } from "react";
+import Footer from "../components/footer";
 
 export default function Teacher() {
     const [showForm, setShowForm] = useState(false);
@@ -69,95 +70,104 @@ export default function Teacher() {
       router.push('/Home');
     }
      
-    return (
-    <div className="p-10">
-  <div className="flex justify-between items-start">
-    <div>
-      <button
-        onClick={() => setShowForm(true)}
-        className="bg-violet-800 text-white px-4 py-2 rounded"
-      >
-        Add Teacher
-      </button>
+   return (
+  <div className="min-h-screen bg-gray-100 flex flex-col">
+    <main className="flex-1 p-10">
+      <div className="flex justify-between items-start">
+        <div>
+          <button
+            onClick={() => setShowForm(true)}
+            className="bg-violet-800 text-white px-4 py-2 rounded"
+          >
+            Add Teacher
+          </button>
 
-      {showForm && (
-        <form
-          onSubmit={handleSubmit}
-          className="mt-5 flex flex-col gap-3 w-80"
-        >
-          <input
-            placeholder="Name"
-            className="border p-2 rounded"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+          {showForm && (
+            <form
+              onSubmit={handleSubmit}
+              className="mt-5 flex flex-col gap-3 w-80"
+            >
+              <input
+                placeholder="Name"
+                className="border p-2 rounded"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
 
-          <input
-            placeholder="Surname"
-            className="border p-2 rounded"
-            value={surname}
-            onChange={(e) => setSurname(e.target.value)}
-          />
+              <input
+                placeholder="Surname"
+                className="border p-2 rounded"
+                value={surname}
+                onChange={(e) => setSurname(e.target.value)}
+              />
+
+              <button
+                type="submit"
+                className="bg-green-600 text-white px-4 py-2 rounded"
+              >
+                Save Teacher
+              </button>
+            </form>
+          )}
+        </div>
+
+        <div className="flex gap-3">
+          <button
+            onClick={HomeRedirect}
+            className="bg-blue-600 text-white px-4 py-2 rounded"
+          >
+            Home
+          </button>
 
           <button
-            type="submit"
-            className="bg-green-600 text-white px-4 py-2 rounded"
+            onClick={handleLogout}
+            className="bg-red-600 text-white px-4 py-2 rounded"
           >
-            Save Teacher
+            Logout
           </button>
-        </form>
-      )}
-    </div>
-    <button
-      onClick={HomeRedirect}
-      className="bg-blue-600 text-white px-4 py-2 rounded"
-    >
-      Home
-    </button>
-    <button
-      onClick={handleLogout}
-      className="bg-red-600 text-white px-4 py-2 rounded"
-    >
-      Logout
-    </button>
+        </div>
+      </div>
+
+      <h2 className="text-xl font-bold mt-10 mb-4">Teachers</h2>
+
+      <table className="w-1/2 text-left">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {teachers.map((teacher) => (
+            <tr key={teacher.id}>
+              <td>{teacher.id}</td>
+              <td>{teacher.name}</td>
+              <td>{teacher.surname}</td>
+              <td>
+                <button
+                  onClick={() => handleEditTeacher(teacher)}
+                  className="bg-yellow-400 text-white px-3 py-1 rounded"
+                >
+                  Edit
+                </button>
+
+                <button
+                  onClick={() => handleDeleteTeacher(teacher.id)}
+                  className="bg-red-700 text-white px-3 py-1 rounded ml-2"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </main>
+
+    <Footer />
   </div>
-
-  <h2 className="text-xl font-bold mt-10 mb-4">Teachers</h2>
-
-  <table className="w-1/2 text-left">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Surname</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      {teachers.map((teacher) => (
-        <tr key={teacher.id}>
-          <td>{teacher.id}</td>
-          <td>{teacher.name}</td>
-          <td>{teacher.surname}</td>
-          <td>
-            <button
-              onClick={() => handleEditTeacher(teacher)}
-              className="bg-yellow-400 text-white px-3 py-1 rounded"
-            >
-              Edit
-            </button>
-            <button
-              onClick={() => handleDeleteTeacher(teacher.id)}
-              className="bg-red-700 text-white px-3 py-1 rounded"
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
-  );
+);
 }

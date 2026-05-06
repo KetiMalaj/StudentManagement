@@ -17,7 +17,7 @@ type classType = {
     teacher?: Teacher;
 }; 
         
-export default function Class() {
+export default function ClassTeacher() {
     const [showForm, setShowForm] = useState(false);
     const [name, setName] = useState("");
     const [teacherId, setTeacherId] = useState("");
@@ -30,7 +30,7 @@ export default function Class() {
 
 
     useEffect(() => {
-        axios.get("/api/class")
+        axios.get("/api/classTeacher")
             .then((response) => {
                 setClasses(response.data);
             });
@@ -45,18 +45,18 @@ export default function Class() {
         e.preventDefault();
 
         if (editingClassId) {
-            await axios.put("/api/class", {
+            await axios.put("/api/classTeacher", {
                 id: editingClassId,
                 name,
                 teacherId,
             });
         } else {
-            await axios.post("/api/class", {
+            await axios.post("/api/classTeacher", {
                 name,
                 teacherId,
             });
         }
-        const response = await axios.get("/api/class");
+        const response = await axios.get("/api/classTeacher");
         setClasses(response.data);
 
         setName("");
@@ -75,10 +75,10 @@ export default function Class() {
     const handleDeleteClass = async (id: number) => {
         const confirmDelete = confirm("Are you sure you want to delete this class?");
         if (!confirmDelete) return;
-        await axios.delete("/api/class", {
+        await axios.delete("/api/classTeacher", {
             data: { id },
         });
-        const response = await axios.get("/api/class");
+        const response = await axios.get("/api/classTeacher");
         setClasses(response.data);
     };
 

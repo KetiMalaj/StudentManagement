@@ -14,7 +14,7 @@ function Body() {
     router.push("/Teacher");
   };
   const goToClasses = () => {
-    router.push("/Class");
+    router.push("/ClassTeacher");
   };
 
 return (

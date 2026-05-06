@@ -39,15 +39,17 @@ model Teacher {
     surname  String
     @@unique([name, surname])
 
-    class Class?
+    class SchoolClass?
   }
 
-model Class {
+model SchoolClass {
   id        Int            @id @default(autoincrement())
   name      String
   teacherId Int @unique
   teacher   Teacher @relation(fields: [teacherId], references: [id])
   students  StudentClass[]
+
+  @@map("Class")
 }
 
 model StudentClass {
@@ -55,7 +57,7 @@ model StudentClass {
   classId   Int
 
   student   student     @relation(fields: [studentId], references: [id])
-  class     Class @relation(fields: [classId], references: [id])
+  class     SchoolClass @relation(fields: [classId], references: [id])
 
   @@id([studentId, classId])
 }

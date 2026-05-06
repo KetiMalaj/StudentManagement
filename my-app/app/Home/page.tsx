@@ -1,70 +1,11 @@
-"use client";
-import { useRouter } from "next/navigation";
-import  Footer  from "../components/footer";
+import Body from "@/components/body";
+import Footer from "@/components/footer";
+
 export default function Home() {
-
-  const router = useRouter();  
-  
-  const goToStudents = () => {
-    router.push("/Student");
-  };
-  const goToDeans = () => {
-    router.push("/Dean");
-  };
-  const goToTeachers = () => {
-    router.push("/Teacher");
-  };
-  const goToClasses = () => {
-  router.push("/Class");
-};
-
-return (
-  <div className="min-h-screen bg-gray-100 flex flex-col">
-    <main className="flex-1 flex items-center justify-center">
-      <div className="flex flex-col items-center m-6 p-10 space-y-8 bg-white shadow-2xl rounded-2xl">
-        <div className="flex flex-col justify-center p-8 md:p-14">
-          <h2 className="text-4xl font-bold text-violet-800 mb-3">
-            Welcome
-          </h2>
-
-          <p className="font-light text-gray-500 mb-8">
-            Select an option below to navigate to the respective section.
-          </p>
-        </div>
-
-        <div className="flex flex-col gap-4 w-full sm:w-xs">
-          <button
-            onClick={goToStudents}
-            className="w-full bg-violet-800 text-white p-3 rounded-lg font-semibold hover:bg-white hover:text-violet-800 hover:border hover:border-violet-800 transition"
-          >
-            Students
-          </button>
-
-          <button
-            onClick={goToDeans}
-            className="w-full bg-violet-800 text-white p-3 rounded-lg font-semibold hover:bg-white hover:text-violet-800 hover:border hover:border-violet-800 transition"
-          >
-            Deans
-          </button>
-
-          <button
-            onClick={goToTeachers}
-            className="w-full bg-violet-800 text-white p-3 rounded-lg font-semibold hover:bg-white hover:text-violet-800 hover:border hover:border-violet-800 transition"
-          >
-            Teachers
-          </button>
-
-          <button
-            onClick={goToClasses}
-            className="w-full bg-violet-800 text-white p-3 rounded-lg font-semibold hover:bg-white hover:text-violet-800 hover:border hover:border-violet-800 transition"
-          >
-            Classes
-          </button>
-        </div>
-      </div>
-    </main>
-
-    <Footer />
-  </div>
-);
+  return (
+    <div className="min-h-screen bg-gray-100 flex flex-col">
+      <Body />
+      <Footer />
+    </div>
+  );
 }

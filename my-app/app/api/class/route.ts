@@ -9,7 +9,7 @@ export async function POST(request: Request) {
         });
     }
 
-    const newClass = await prisma.class.create({
+    const newClass = await prisma.schoolClass.create({
 
         data: {
             name,
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
-    const fetchclasses = await prisma.class.findMany();
+    const fetchclasses = await prisma.schoolClass.findMany();
     return Response.json(fetchclasses);
     }
 
@@ -35,7 +35,7 @@ export async function PUT(request: Request) {
         });
       }
     
-    const updatedClass = await prisma.class.update({
+    const updatedClass = await prisma.schoolClass.update({
     where : {
         id : Number(id),
     },
@@ -53,7 +53,7 @@ export async function PUT(request: Request) {
     export async function DELETE(request: Request) {
         const { id } = await request.json();    
 
-        const deletedClass = await prisma.class.delete({
+        const deletedClass = await prisma.schoolClass.delete({
             where : {
                 id : Number(id),
             },

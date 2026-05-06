@@ -10,7 +10,7 @@ export async function proxy(request: NextRequest) {
 
   if (pathname.startsWith("/auth")) {
     if (verified) {
-      return NextResponse.redirect(new URL("/Student", request.url));
+      return NextResponse.redirect(new URL("/Dashboard", request.url));
     }
     return NextResponse.next();
   }

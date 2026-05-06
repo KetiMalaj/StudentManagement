@@ -26,7 +26,7 @@ export default function Header({ addLabel, onAddClick }: HeaderProps) {
     }
 
     const homeRedirect = () => {
-        router.push("/Home");
+        router.push("/Dashboard");
     }
 
     return (

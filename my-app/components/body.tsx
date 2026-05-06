@@ -5,13 +5,13 @@ function Body() {
   const router = useRouter();  
   
   const goToStudents = () => {
-    router.push("/Student");
+    router.push("Dashboard/Student");
   };
   const goToDeans = () => {
-    router.push("/Dean");
+    router.push("Dashboard/Dean");
   };
   const goToTeachers = () => {
-    router.push("/Teacher");
+    router.push("Dashboard/Teacher");
   };
   const goToClasses = () => {
     router.push("/ClassTeacher");

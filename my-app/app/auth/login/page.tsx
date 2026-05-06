@@ -11,7 +11,7 @@ const Login = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      router.push('/Home');
+      router.push('/Dashboard');
     }
   }, [router]);
 
@@ -30,7 +30,7 @@ const Login = () => {
       .then(function (response) {
         document.cookie = `token=${response.data.token}; path=/;`;
         localStorage.setItem('token', response.data.token);
-        router.push('/Home');
+        router.push('/Dashboard');
       })
       .catch(function (error) {
         alert("Login failed: " + (error.response?.data?.error || error.message));

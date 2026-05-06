@@ -72,7 +72,6 @@ export default function Teacher() {
     return (
     <div className="p-10">
   <div className="flex justify-between items-start">
-    {/* LEFT SIDE */}
     <div>
       <button
         onClick={() => setShowForm(true)}

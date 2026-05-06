@@ -13,6 +13,9 @@ export default function Home() {
   const goToTeachers = () => {
     router.push("/Teacher");
   };
+  const goToClasses = () => {
+  router.push("/Class");
+};
 
 return (
    <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -42,6 +45,12 @@ return (
                 className="w-full bg-violet-800 text-white p-3 rounded-lg font-semibold hover:bg-white hover:text-violet-800 hover:border hover:border-violet-800 transition"
               >
                 Teachers
+              </button>
+        <button
+                onClick={goToClasses}
+                className="w-full bg-violet-800 text-white p-3 rounded-lg font-semibold hover:bg-white hover:text-violet-800 hover:border hover:border-violet-800 transition"
+              >
+                Classes
               </button>
         </div>
       </div>

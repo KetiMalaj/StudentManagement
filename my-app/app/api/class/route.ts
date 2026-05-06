@@ -1,17 +1,19 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/app/lib/prisma";
 
 export async function POST(request: Request) {
-    const { name } = await request.json();
+    const { name, teacherId } = await request.json();
 
-    if (!name) {
-        return new Response(JSON.stringify({ error: "Class name is required" }), {
+    if (!name || !teacherId) {
+        return new Response(JSON.stringify({ error: "Class name and teacher ID are required" }), {
             status: 400,
         });
     }
 
     const newClass = await prisma.class.create({
+
         data: {
             name,
+            teacherId : Number(teacherId),
         }
     });
     return new Response(JSON.stringify({ message : "Class created successfully" }), {
@@ -25,27 +27,28 @@ export async function GET() {
     }
 
 export async function PUT(request: Request) {
-    const { id, name } = await request.json();
+    const { id, name, teacherId } = await request.json();
 
-    if (!id || !name ) {
-        return new Response(JSON.stringify({ error: "Id, name of the class are required" }), {
+    if (!id || !name || !teacherId) {
+        return new Response(JSON.stringify({ error: "Id, name, and teacher ID of the class are required" }), {
          status: 400,
         });
       }
-    }
-
-const updatedClass = await prisma.class.update({
+    
+    const updatedClass = await prisma.class.update({
     where : {
         id : Number(id),
     },
     data : {
-        name,       
+        name,
+        teacherId : Number(teacherId),
     }
 });
 
     return new Response(JSON.stringify(updatedClass), {
         status: 200,
     });
+}
 
     export async function DELETE(request: Request) {
         const { id } = await request.json();    

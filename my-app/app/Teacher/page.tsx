@@ -2,7 +2,7 @@
 import axios from "axios";
 import { useRouter } from "next/dist/client/components/navigation";
 import { useEffect, useState } from "react";
-import Footer from "../components/footer";
+import Footer from "../../components/footer";
 
 export default function Teacher() {
     const [showForm, setShowForm] = useState(false);

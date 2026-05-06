@@ -14,7 +14,7 @@ export default function Teacher() {
 
     useEffect(() => {
         axios
-          .get("/api/teacher")
+          .get("/api/Dashboard/teacher")
           .then((response) => {
             setTeachers(response.data);
           });
@@ -23,19 +23,19 @@ export default function Teacher() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (editingTeacherId) {
-            await axios.put("/api/teacher", {
+            await axios.put("/api/Dashboard/teacher", {
                 id: editingTeacherId,
                 name,
                 surname,
             });
         } else {
-            await axios.post("/api/teacher", {
+            await axios.post("/api/Dashboard/teacher", {
                 name,
                 surname,
             });
         }
 
-        const response = await axios.get("/api/teacher");
+        const response = await axios.get("/api/Dashboard/teacher");
         setTeachers(response.data);
 
         setName("");
@@ -54,10 +54,10 @@ export default function Teacher() {
     const handleDeleteTeacher = async (id: number) => {
         const confirmDelete = confirm("Are you sure you want to delete this teacher?");
         if (!confirmDelete) return;
-        await axios.delete("/api/teacher", {
+        await axios.delete("/api/Dashboard/teacher", {
             data: { id },
         });
-        const response = await axios.get("/api/teacher");
+        const response = await axios.get("/api/Dashboard/teacher");
         setTeachers(response.data);
     };
      

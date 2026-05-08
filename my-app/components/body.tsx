@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 function Body() {
 
   const router = useRouter();  
-  
+
   const goToStudents = () => {
     router.push("Dashboard/Student");
   };
@@ -14,7 +14,7 @@ function Body() {
     router.push("Dashboard/Teacher");
   };
   const goToClasses = () => {
-    router.push("/ClassTeacher");
+    router.push("/Dashboard/dean/classes");
   };
 
 return (

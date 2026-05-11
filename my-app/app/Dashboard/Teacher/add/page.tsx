@@ -15,13 +15,13 @@ export default function Teacher() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (editingTeacherId) {
-            await axios.put("/api/Dashboard/teacher", {
+            await axios.put("/api/Dashboard/teacher/add", {
                 id: editingTeacherId,
                 name,
                 surname,
             });
         } else {
-            await axios.post("/api/Dashboard/teacher", {
+            await axios.post("/api/Dashboard/teacher/add", {
                 name,
                 surname,
             });
@@ -38,7 +38,7 @@ export default function Teacher() {
               Back
             </button>
     
-            <h2 className="text-xl font-bold mt-10 mb-4">Add Student</h2>
+            <h2 className="text-xl font-bold mt-10 mb-4">Add Teacher</h2>
     
             <form
               onSubmit={handleSubmit}
@@ -62,7 +62,7 @@ export default function Teacher() {
                 type="submit"
                 className="bg-green-600 text-white px-4 py-2 rounded"
               >
-                Save Student
+                Save Teacher
               </button>
             </form>
           </main>

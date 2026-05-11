@@ -1,3 +1,4 @@
+"use client";
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -18,7 +19,7 @@ export default function Edit() {
       if (!id) return;
   
       axios
-        .get(`/api/dashboard/teacher/edit?id=${id}`)
+        .get(`/api/Dashboard/teacher/edit?id=${id}`)
         .then(function (response) {
           setName(response.data.name);
           setSurname(response.data.surname);
@@ -31,20 +32,20 @@ export default function Edit() {
     const handleEditStudent = async (e: React.FormEvent) => {
       e.preventDefault();
   
-      await axios.put("/api/dashboard/teacher/edit", {
+      await axios.put("/api/Dashboard/teacher/edit", {
         id,
         name,
         surname,
       });
   
-      router.push("/dashboard/Teacher/view");
+      router.push("/Dashboard/Teacher/view");
     };
   
     return (
       <div className="min-h-screen bg-gray-100 flex flex-col">
         <main className="flex-1 p-10">
           <button
-            onClick={() => router.push("/dashboard/Teacher/view")}
+            onClick={() => router.push("/Dashboard/Teacher/view")}
             className="bg-blue-600 text-white px-4 py-2 rounded"
           >
             Back

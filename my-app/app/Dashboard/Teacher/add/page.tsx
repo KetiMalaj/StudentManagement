@@ -32,7 +32,7 @@ export default function Teacher() {
         <div className="min-h-screen bg-gray-100 flex flex-col">
           <main className="flex-1 p-10">
             <button
-              onClick={() => router.push("/dashboard/Teacher/view")}
+              onClick={() => router.push("/Dashboard/Teacher/view")}
               className="bg-blue-600 text-white px-4 py-2 rounded"
             >
               Back

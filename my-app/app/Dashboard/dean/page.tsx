@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
+import { useRouter } from "next/navigation";
 
 
 export default function Home() {
@@ -11,7 +12,7 @@ export default function Home() {
   const [surname, setSurname] = useState("");
   const [deans, setDeans] = useState<{ id: number; name: string; surname: string }[]>([]);
   const [editingDeanId, setEditingDeanId] = useState<number | null>(null);
-  
+  const router = useRouter();
  
 
   useEffect(() => {
@@ -67,6 +68,9 @@ export default function Home() {
     setDeans(response.data);
   };
 
+  const editTeacher = () => {
+    router.push("/Dashboard/dean/editteacher");
+  };
 
   
     return (
@@ -105,6 +109,12 @@ export default function Home() {
             </form>
           )}
         
+        <button
+                  onClick={() => editTeacher()}
+                  className="bg-yellow-400 text-white px-3 py-1 rounded ml-2"
+                >
+                  Edit Teacher
+                </button>
 
       <h2 className="text-xl font-bold mt-10 mb-4">Deans</h2>
 

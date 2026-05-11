@@ -5,16 +5,16 @@ function Body() {
   const router = useRouter();  
 
   const goToStudents = () => {
-    router.push("Dashboard/Student");
+    router.push("Dashboard/Student/view");
   };
   const goToDeans = () => {
-    router.push("Dashboard/dean");
+    router.push("Dashboard/Dean/view");
   };
   const goToTeachers = () => {
-    router.push("Dashboard/Teacher");
+    router.push("Dashboard/Teacher/view");
   };
   const goToClasses = () => {
-    router.push("/Dashboard/dean/classes");
+    router.push("/Dashboard/Dean/classes");
   };
 
 return (

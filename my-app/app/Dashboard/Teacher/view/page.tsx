@@ -1,8 +1,7 @@
 "use client";
+import Sidebar from "@/components/sidebar";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Footer from "@/components/footer";
-import Header from "@/components/header";
 import { useRouter } from "next/dist/client/components/navigation";
 
 type Teacher = {
@@ -45,52 +44,55 @@ export default function View() {
             router.push(`/Dashboard/Teacher/edit?id=${id}`);
     }
     return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="min-h-screen bg-gray-100 flex">
+      <Sidebar />
+
       <main className="flex-1 p-10">
-        <Header
-          addLabel="Add Teacher"
-          onAddClick={gotoaddteacher}
-        />
+  <div className="bg-white rounded-xl shadow-md p-6 w-full max-w-4xl">
+    <h2 className="text-2xl font-bold text-violet-800 mb-6">
+      Teachers
+    </h2>
 
-        <h2 className="text-xl font-bold mt-10 mb-4">Teachers</h2>
+    <table className="w-full text-left border-collapse">
+      <thead>
+        <tr className="bg-violet-800 text-white">
+          <th className="p-3 rounded-tl-lg">ID</th>
+          <th className="p-3">Name</th>
+          <th className="p-3">Surname</th>
+          <th className="p-3 rounded-tr-lg">Actions</th>
+        </tr>
+      </thead>
 
-        <table className="w-1/2 text-left">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Surname</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+      <tbody>
+        {teachers.map((teacher) => (
+          <tr
+            key={teacher.id}
+            className="border-b hover:bg-violet-50 transition"
+          >
+            <td className="p-3">{teacher.id}</td>
+            <td className="p-3">{teacher.name}</td>
+            <td className="p-3">{teacher.surname}</td>
+            <td className="p-3">
+              <button
+                onClick={() => gotoeditteacher(teacher.id)}
+                className="bg-yellow-400 text-white px-4 py-1 rounded-md hover:bg-yellow-500 transition"
+              >
+                Edit
+              </button>
 
-          <tbody>
-            {teachers.map((teacher) => (
-              <tr key={teacher.id}>
-                <td>{teacher.id}</td>
-                <td>{teacher.name}</td>
-                <td>{teacher.surname}</td>
-                <td>
-                  <button
-                    onClick={() => gotoeditteacher(teacher.id)}
-                    className="bg-yellow-400 text-white px-3 py-1 rounded"
-                  >
-                    Edit
-                  </button>
-                  <button
-                        onClick={() => handleDelete(teacher.id)}
-                    className="bg-red-600 text-white px-3 py-1 rounded ml-2"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </main>
-
-      <Footer />
+              <button
+                onClick={() => handleDelete(teacher.id)}
+                className="bg-red-600 text-white px-4 py-1 rounded-md hover:bg-red-700 transition ml-2"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</main>
     </div>
   );
 }

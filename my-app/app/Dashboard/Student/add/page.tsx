@@ -11,7 +11,7 @@ export default function Add() {
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await axios.post("/api/Dashboard/student", {
+    await axios.post("/api/Dashboard/student/add", {
         name, 
         surname 
     });
@@ -23,7 +23,7 @@ export default function Add() {
     <div className="min-h-screen bg-gray-100 flex flex-col">
       <main className="flex-1 p-10">
         <button
-          onClick={() => router.push("/dashboard/Student/view")}
+          onClick={() => router.push("/Dashboard/Student/view")}
           className="bg-blue-600 text-white px-4 py-2 rounded"
         >
           Back

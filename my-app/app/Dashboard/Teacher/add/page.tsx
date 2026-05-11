@@ -26,6 +26,7 @@ export default function Teacher() {
                 surname,
             });
         }
+        router.push("/Dashboard/Teacher/view");
     };
 
     return (

@@ -1,54 +1,62 @@
 import { prisma } from "@/app/lib/prisma";
 
 export async function GET(request: Request) {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get("id");
+  const { searchParams } = new URL(request.url);
 
-    if (!id) {
-        return Response.json({ error: "Id is required" }, { status: 400 });
-    }
+  const id = searchParams.get("id");
 
-    const student = await prisma.student.findUnique({
-        where: { id: Number(id) },
-    });
+  if (!id) {
+    return Response.json(
+      { error: "Student id is required" },
+      { status: 400 }
+    );
+  }
 
-    if (!student) {
-        return Response.json({ error: "Student not found" }, { status: 404 });
-    }
+  const foundStudent = await prisma.student.findUnique({
+    where: {
+      id: Number(id),
+    },
+    include: {
+      faculty: true,
+      classes: {
+        include: {
+          class: true,
+        },
+      },
+    },
+  });
 
-    return Response.json(student);
+  return Response.json(foundStudent);
 }
 
 export async function PUT(request: Request) {
-    const { id, name, surname } = await request.json();
+  const { id, name, surname, facultyId, classId } = await request.json();
 
-    if (!id || !name || !surname) {
-        return new Response(JSON.stringify({ error: "Id, name and surname are required" }), {
-            status: 400,
-        });
-    }
+  const updatedStudent = await prisma.student.update({
+    where: {
+      id: Number(id),
+    },
+    data: {
+      name,
+      surname,
+      facultyId: facultyId ? Number(facultyId) : null,
+    },
+  });
 
-    try {
-        const updatedStudent = await prisma.student.update({
-            where: {
-                id: Number(id),
-            },
-            data: {
-                name,
-                surname,
-            },
-        });
+  if (classId) {
+    await prisma.studentClass.deleteMany({
+      where: {
+        studentId: Number(id),
+      },
+    });
 
-        return new Response(JSON.stringify(updatedStudent), {
-            status: 200,
-        });
-    } catch (error: unknown) {
-        if (error instanceof Error && "code" in error && (error as { code: string }).code === "P2002") {
-            return new Response(JSON.stringify({ error: "A student with that name and surname already exists" }), {
-                status: 409,
-            });
-        }
-        throw error;
-    }
+    await prisma.studentClass.create({
+      data: {
+        studentId: Number(id),
+        classId: Number(classId),
+      },
+    });
+  }
+
+  return Response.json(updatedStudent);
 }
-

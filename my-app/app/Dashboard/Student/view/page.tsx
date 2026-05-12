@@ -9,6 +9,17 @@ type Student = {
   id: number;
   name: string;
   surname: string;
+  faculty?: {
+    id: number;
+    facultyName: string;
+    facultyHead: string;
+  } | null;
+  classes: {
+    class: {
+      id: number;
+      name: string;
+    };
+  }[];
 };
 
 export default function StudentViewPage() {
@@ -67,7 +78,10 @@ export default function StudentViewPage() {
           <th className="p-3 rounded-tl-lg">ID</th>
           <th className="p-3">Name</th>
           <th className="p-3">Surname</th>
+          <th className="p-3">Faculty</th>
+          <th className="p-3">Class</th>
           <th className="p-3 rounded-tr-lg">Actions</th>
+          
         </tr>
       </thead>
 
@@ -80,6 +94,12 @@ export default function StudentViewPage() {
             <td className="p-3">{student.id}</td>
             <td className="p-3">{student.name}</td>
             <td className="p-3">{student.surname}</td>
+            <td className="p-3">
+              {student.faculty ? student.faculty.facultyName : "Not assigned"}
+            </td>
+            <td className="p-3">
+              {student.classes?.length > 0 ? student.classes[0].class.name : "Not assigned"}
+            </td>
             <td className="p-3">
               <button
                 onClick={() => goToEditStudent(student.id)}

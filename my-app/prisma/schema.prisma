@@ -18,10 +18,15 @@ model user{
 }
 
 model student {
-  id       Int            @id @default(autoincrement())
-  name     String
+  id        Int            @id @default(autoincrement())
+  name      String
   surname   String
-  classes  StudentClass[]
+
+  facultyId Int?
+  faculty   Faculty?       @relation(fields: [facultyId], references: [id])
+
+  classes   StudentClass[]
+
   @@unique([name, surname])
 }
 
@@ -63,7 +68,9 @@ model StudentClass {
 }
 
 model Faculty {
-  id          Int    @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   facultyName String
   facultyHead String
+
+  students    student[]
 }

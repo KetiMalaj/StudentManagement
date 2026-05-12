@@ -21,6 +21,7 @@ model student {
   id        Int            @id @default(autoincrement())
   name      String
   surname   String
+  gpa       Float?
 
   facultyId Int?
   faculty   Faculty?       @relation(fields: [facultyId], references: [id])

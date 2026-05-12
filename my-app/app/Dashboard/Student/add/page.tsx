@@ -18,6 +18,7 @@ type ClassType = {
 export default function AddStudentPage() {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
+  const [gpa, setGpa] = useState("");
 
   const [facultyId, setFacultyId] = useState("");
   const [classId, setClassId] = useState("");
@@ -43,6 +44,7 @@ export default function AddStudentPage() {
     await axios.post("/api/Dashboard/student/add", {
       name,
       surname,
+      gpa,
       facultyId,
       classId,
     });
@@ -85,6 +87,15 @@ export default function AddStudentPage() {
             value={surname}
             onChange={(e) => setSurname(e.target.value)}
             required
+          />
+          <label className="font-semibold">GPA</label>
+          <input
+          type="number"
+          step="0.01"
+          placeholder="GPA"
+          className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+          value={gpa}
+          onChange={(e) => setGpa(e.target.value)}
           />
 
           <label className="font-semibold">Assign to Faculty</label>

@@ -18,6 +18,7 @@ type ClassType = {
 export default function EditStudentPage() {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
+  const [gpa, setGpa] = useState("");
 
   const [facultyId, setFacultyId] = useState("");
   const [classId, setClassId] = useState("");
@@ -36,7 +37,7 @@ export default function EditStudentPage() {
     axios.get(`/api/Dashboard/student/edit?id=${id}`).then((response) => {
       setName(response.data.name);
       setSurname(response.data.surname);
-
+      setGpa(response.data.gpa?.toString() || "");
       if (response.data.facultyId) {
         setFacultyId(String(response.data.facultyId));
       }
@@ -62,6 +63,7 @@ export default function EditStudentPage() {
       id,
       name,
       surname,
+      gpa,
       facultyId,
       classId,
     });
@@ -111,6 +113,15 @@ export default function EditStudentPage() {
             value={surname}
             onChange={(e) => setSurname(e.target.value)}
             required
+          />
+          <label className="font-semibold">GPA</label>
+          <input
+            type="number"
+            step="0.01"
+            placeholder="GPA"
+            className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+            value={gpa}
+            onChange={(e) => setGpa(e.target.value)}
           />
 
           <label className="font-semibold">Assign to Faculty</label>

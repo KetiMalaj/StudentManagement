@@ -9,6 +9,7 @@ type Student = {
   id: number;
   name: string;
   surname: string;
+  gpa?: number|null;
   faculty?: {
     id: number;
     facultyName: string;
@@ -67,10 +68,10 @@ export default function StudentViewPage() {
       <Sidebar />
 
       <main className="flex-1 p-10">
-  <div className="bg-white rounded-xl shadow-md p-6 w-full max-w-4xl">
-    <h2 className="text-2xl font-bold text-violet-800 mb-6">
+      <div className="bg-white rounded-xl shadow-md p-6 w-full max-w-4xl">
+      <h2 className="text-2xl font-bold text-violet-800 mb-6">
       Students
-    </h2>
+      </h2>
 
     <table className="w-full text-left border-collapse">
       <thead>
@@ -78,6 +79,7 @@ export default function StudentViewPage() {
           <th className="p-3 rounded-tl-lg">ID</th>
           <th className="p-3">Name</th>
           <th className="p-3">Surname</th>
+          <th className="p-3">GPA</th>
           <th className="p-3">Faculty</th>
           <th className="p-3">Class</th>
           <th className="p-3 rounded-tr-lg">Actions</th>
@@ -94,6 +96,7 @@ export default function StudentViewPage() {
             <td className="p-3">{student.id}</td>
             <td className="p-3">{student.name}</td>
             <td className="p-3">{student.surname}</td>
+            <td className="p-3">{student.gpa ?? "No GPA"}</td>
             <td className="p-3">
               {student.faculty ? student.faculty.facultyName : "Not assigned"}
             </td>

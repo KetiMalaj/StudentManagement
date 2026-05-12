@@ -30,7 +30,7 @@ export async function GET(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const { id, name, surname, facultyId, classId } = await request.json();
+  const { id, name, surname, gpa, facultyId, classId } = await request.json();
 
   const updatedStudent = await prisma.student.update({
     where: {
@@ -39,6 +39,7 @@ export async function PUT(request: Request) {
     data: {
       name,
       surname,
+      gpa: gpa ? Number(gpa) : null,
       facultyId: facultyId ? Number(facultyId) : null,
     },
   });

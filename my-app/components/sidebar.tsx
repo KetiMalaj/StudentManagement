@@ -28,6 +28,13 @@ export default function Sidebar() {
         <p className="font-semibold mt-4">Show</p>
 
         <button
+         onClick={() => router.push("/Dashboard/faculty/view")}
+         className="text-left pl-4 hover:text-violet-800"
+        >
+         Faculties
+        </button>
+
+        <button
           onClick={() => router.push("/Dashboard/Student/view")}
           className="text-left pl-4 hover:text-violet-800"
         >
@@ -56,6 +63,13 @@ export default function Sidebar() {
         </button>
 
         <p className="font-semibold mt-4">Add</p>
+
+        <button
+         onClick={() => router.push("/Dashboard/faculty/add")}
+         className="text-left pl-4 hover:text-violet-800"
+      >
+          Add Faculty
+        </button>
 
         <button
           onClick={() => router.push("/Dashboard/Student/add")}

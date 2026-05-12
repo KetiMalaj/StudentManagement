@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import axios from "axios";
-import Footer from "@/components/footer";
 import { useRouter } from "next/navigation";
 
 export default function AddDeanPage() {
@@ -25,46 +24,49 @@ export default function AddDeanPage() {
     router.push("/Dashboard/dean/view");
   };
 
-  return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
-      <main className="flex-1 p-10">
+   return (
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-10">
+      <div className="bg-white shadow-md rounded-2xl p-8 w-full max-w-md">
         <button
           onClick={() => router.push("/Dashboard/dean/view")}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+          className="mb-8 bg-violet-800 text-white px-4 py-2 rounded-lg hover:bg-violet-900 transition"
         >
           Back
         </button>
 
-        <h2 className="text-xl font-bold mt-10 mb-4">Add Dean</h2>
+        <h2 className="text-3xl font-bold text-violet-800 mb-2">
+          Add Dean
+        </h2>
 
-        <form
-          onSubmit={handleAddDean}
-          className="mt-5 flex flex-col gap-3 w-80"
-        >
+        <p className="text-gray-500 mb-8">
+          Fill in the dean information below.
+        </p>
+
+        <form onSubmit={handleAddDean} className="flex flex-col gap-4">
           <input
             placeholder="Name"
-            className="border p-2 rounded"
+            className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
           />
 
           <input
             placeholder="Surname"
-            className="border p-2 rounded"
+            className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
             value={surname}
             onChange={(e) => setSurname(e.target.value)}
+            required
           />
 
           <button
             type="submit"
-            className="bg-green-600 text-white px-4 py-2 rounded"
+            className="bg-violet-800 text-white p-3 rounded-lg font-semibold hover:bg-violet-900 transition"
           >
             Save Dean
           </button>
         </form>
-      </main>
-
-      <Footer />
+      </div>
     </div>
   );
 }

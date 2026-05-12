@@ -61,3 +61,9 @@ model StudentClass {
 
   @@id([studentId, classId])
 }
+
+model Faculty {
+  id          Int    @id @default(autoincrement())
+  facultyName String
+  facultyHead String
+}

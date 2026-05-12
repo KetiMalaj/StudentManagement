@@ -11,7 +11,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-export default function gapchart() {
+export default function GpaChart() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function gapchart() {
           <Tooltip />
 
           <Bar
-            dataKey="students"
+            dataKey="gpa"
             fill="#2563eb"
             radius={[8, 8, 0, 0]}
           />

@@ -1,6 +1,7 @@
 
 import Sidebar from "@/components/sidebar";
 import Chart from "@/components/Chart";
+import GpaChart from "@/components/gpachart";
 
 export default function Home() {
   return (
@@ -10,6 +11,9 @@ export default function Home() {
       <main className="flex-1 p-6">
         <h2 className="text-2xl font-bold mb-4">Students per Class</h2>
         <Chart />
+
+        <h2 className="text-2xl font-bold mb-4 mt-6">Average GPA per Class</h2>
+        <GpaChart />
       </main>
     </div>
   );

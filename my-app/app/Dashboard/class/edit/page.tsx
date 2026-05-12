@@ -1,8 +1,6 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Footer from "@/components/footer";
 import { useRouter, useSearchParams } from "next/navigation";
 
 type Teacher = {
@@ -57,31 +55,48 @@ export default function EditClassPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
-      <main className="flex-1 p-10">
-        <button
-          onClick={() => router.push("/Dashboard/class/view")}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          Back
-        </button>
+  <div className="min-h-screen bg-gray-100 flex items-center justify-center p-10">
+    <div className="bg-white shadow-md rounded-2xl p-8 w-full max-w-md">
+      <button
+        onClick={() => router.push("/Dashboard/class/view")}
+        className="mb-8 bg-violet-800 text-white px-4 py-2 rounded-lg hover:bg-violet-900 transition"
+      >
+        Back
+      </button>
 
-        <h2 className="text-xl font-bold mt-10 mb-4">Edit Class</h2>
+      <h2 className="text-4xl font-bold text-violet-800 mb-2">
+        Edit Class
+      </h2>
 
-        <form
-          onSubmit={handleEditClass}
-          className="mt-5 flex flex-col gap-3 w-80"
-        >
+      <p className="text-gray-500 mb-8">
+        Update class details.
+      </p>
+
+      <form onSubmit={handleEditClass} className="flex flex-col gap-4">
+        <div className="flex flex-col">
+          <label className="font-semibold mb-2">ID</label>
+          <input
+            value={id || ""}
+            disabled
+            className="border border-gray-300 p-3 rounded-lg bg-gray-100 text-gray-500"
+          />
+        </div>
+
+        <div className="flex flex-col">
+          <label className="font-semibold mb-2">Class Name</label>
           <input
             placeholder="Class Name"
-            className="border p-2 rounded"
+            className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
+        </div>
 
+        <div className="flex flex-col">
+          <label className="font-semibold mb-2">Teacher</label>
           <select
-            className="border p-2 rounded"
+            className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
             value={teacherId}
             onChange={(e) => setTeacherId(e.target.value)}
             required
@@ -94,17 +109,16 @@ export default function EditClassPage() {
               </option>
             ))}
           </select>
+        </div>
 
-          <button
-            type="submit"
-            className="bg-green-600 text-white px-4 py-2 rounded"
-          >
-            Update Class
-          </button>
-        </form>
-      </main>
-
-      <Footer />
+        <button
+          type="submit"
+          className="bg-violet-800 text-white p-3 rounded-lg font-semibold hover:bg-violet-900 transition mt-4"
+        >
+          Submit
+        </button>
+      </form>
     </div>
-  );
+  </div>
+);
 }

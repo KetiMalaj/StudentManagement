@@ -1,30 +1,6 @@
 import { prisma } from "@/app/lib/prisma";
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-
-  const id = searchParams.get("id");
-
-  if (!id) {
-    return Response.json(
-      { error: "Class id is required" },
-      { status: 400 }
-    );
-  }
-
-  const classItem = await prisma.schoolClass.findUnique({
-    where: {
-      id: Number(id),
-    },
-    include: {
-      teacher: true,
-    },
-  });
-
-  return Response.json(classItem);
-}
-
-export async function PUT(request: Request) {
+export async function POST(request: Request) {
   const { id, name, teacherId } = await request.json();
 
   if (!id || !name || !teacherId) {
@@ -34,15 +10,50 @@ export async function PUT(request: Request) {
     );
   }
 
-  const updatedClass = await prisma.schoolClass.update({
-    where: {
-      id: Number(id),
-    },
-    data: {
-      name,
-      teacherId: Number(teacherId),
-    },
-  });
+  try {
+    const updatedClass = await prisma.schoolClass.update({
+      where: { id: Number(id) },
+      data: {
+        name,
+        teacherId: Number(teacherId),
+      },
+    });
 
-  return Response.json(updatedClass);
+    return Response.json(updatedClass);
+  } catch (error: unknown) {
+    if (error instanceof Error && "code" in error && (error as { code: string }).code === "P2002") {
+      return Response.json(
+        { error: "This teacher is already assigned to a class" },
+        { status: 409 }
+      );
+    }
+    throw error;
+  }
+}
+
+export async function GET(request: Request) {
+  try {
+    const classId = new URL(request.url).searchParams.get("classId");
+
+    if (!classId) {
+      return Response.json({ error: "classId is required" }, { status: 400 });
+    }
+
+    const schoolClass = await prisma.schoolClass.findUnique({
+      where: { id: Number(classId) },
+    });
+
+    const availableTeachers = await prisma.teacher.findMany({
+      where: {
+        OR: [
+          { class: null },
+          ...(schoolClass ? [{ id: schoolClass.teacherId }] : []),
+        ],
+      },
+    });
+
+    return Response.json({ schoolClass, availableTeachers });
+  } catch (error: unknown) {
+    throw error;
+  }
 }

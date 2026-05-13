@@ -13,6 +13,8 @@ export default function EditClassPage() {
   const [name, setName] = useState("");
   const [teacherId, setTeacherId] = useState("");
   const [teachers, setTeachers] = useState<Teacher[]>([]);
+  const [facultyId, setFacultyId] = useState("");
+  const [faculties, setFaculties] = useState<{ id: number; facultyName: string; facultyHead: string }[]>([]);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -27,6 +29,7 @@ export default function EditClassPage() {
       .then(function (response) {
         setName(response.data.name);
         setTeacherId(String(response.data.teacherId));
+        setFacultyId(String(response.data.facultyId));
       })
       .catch(function (error) {
         console.log(error);
@@ -40,6 +43,14 @@ export default function EditClassPage() {
       .catch(function (error) {
         console.log(error);
       });
+    axios
+    .get("/api/Dashboard/faculty/view")
+    .then((response) => {
+    setFaculties(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }, [id]);
 
   const handleEditClass = async (e: React.FormEvent) => {
@@ -49,6 +60,7 @@ export default function EditClassPage() {
       id,
       name,
       teacherId: Number(teacherId),
+      facultyId: Number(facultyId),
     });
 
     router.push("/Dashboard/class/view");
@@ -64,56 +76,56 @@ export default function EditClassPage() {
         Back
       </button>
 
-      <h2 className="text-4xl font-bold text-violet-800 mb-2">
+      <h2 className="text-3xl font-bold text-violet-800 mb-2">
         Edit Class
       </h2>
 
       <p className="text-gray-500 mb-8">
-        Update class details.
+        Update the class information below.
       </p>
 
       <form onSubmit={handleEditClass} className="flex flex-col gap-4">
-        <div className="flex flex-col">
-          <label className="font-semibold mb-2">ID</label>
-          <input
-            value={id || ""}
-            disabled
-            className="border border-gray-300 p-3 rounded-lg bg-gray-100 text-gray-500"
-          />
-        </div>
+        <input
+          placeholder="Class Name"
+          className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
 
-        <div className="flex flex-col">
-          <label className="font-semibold mb-2">Class Name</label>
-          <input
-            placeholder="Class Name"
-            className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
+        <select
+          className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+          value={teacherId}
+          onChange={(e) => setTeacherId(e.target.value)}
+          required
+        >
+          <option value="">Select Teacher</option>
 
-        <div className="flex flex-col">
-          <label className="font-semibold mb-2">Teacher</label>
-          <select
-            className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
-            value={teacherId}
-            onChange={(e) => setTeacherId(e.target.value)}
-            required
-          >
-            <option value="">Select Teacher</option>
+          {teachers.map((teacher) => (
+            <option key={teacher.id} value={teacher.id}>
+              {teacher.name} {teacher.surname}
+            </option>
+          ))}
+        </select>
 
-            {teachers.map((teacher) => (
-              <option key={teacher.id} value={teacher.id}>
-                {teacher.name} {teacher.surname}
-              </option>
-            ))}
-          </select>
-        </div>
+        <select
+          className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+          value={facultyId}
+          onChange={(e) => setFacultyId(e.target.value)}
+          required
+        >
+          <option value="">Select Faculty</option>
+
+          {faculties.map((faculty) => (
+            <option key={faculty.id} value={faculty.id}>
+              {faculty.facultyName}
+            </option>
+          ))}
+        </select>
 
         <button
           type="submit"
-          className="bg-violet-800 text-white p-3 rounded-lg font-semibold hover:bg-violet-900 transition mt-4"
+          className="bg-violet-800 text-white p-3 rounded-lg font-semibold hover:bg-violet-900 transition"
         >
           Submit
         </button>

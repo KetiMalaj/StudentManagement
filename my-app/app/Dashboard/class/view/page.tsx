@@ -49,10 +49,6 @@ export default function ClassViewPage() {
     setClasses(response.data);
   };
 
-  const goToAddClass = () => {
-    router.push("/Dashboard/class/add");
-  };
-
   const goToEditClass = (id: number) => {
     router.push(`/Dashboard/class/edit?id=${id}`);
   };

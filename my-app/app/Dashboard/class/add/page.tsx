@@ -8,24 +8,40 @@ type Teacher = {
   id: number;
   name: string;
   surname: string;
+  class: ClassType[];
+};
+type ClassType = {
+  id: number;
+  name: string;
+  teacherId: number;
+  teacher?: Teacher;
+};
+
+type Faculty = {
+  id: number;
+  facultyName: string;
+  facultyHead: string;
 };
 
 export default function AddClassPage() {
   const [name, setName] = useState("");
   const [teacherId, setTeacherId] = useState("");
+  const [facultyId, setFacultyId] = useState("");   
+
+  const [faculties, setFaculties] = useState<Faculty[]>([]);
   const [teachers, setTeachers] = useState<Teacher[]>([]);
 
   const router = useRouter();
 
   useEffect(() => {
     axios
-      .get("/api/Dashboard/teacher/view")
+      .get("/api/Dashboard/class/add")
       .then(function (response) {
-        setTeachers(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
+        setTeachers(response.data);     
       });
+    axios.get("/api/Dashboard/faculty/view").then((response) => {
+      setFaculties(response.data);
+    });
   }, []);
 
   const handleAddClass = async (e: React.FormEvent) => {
@@ -34,10 +50,12 @@ export default function AddClassPage() {
     await axios.post("/api/Dashboard/class/add", {
       name,
       teacherId: Number(teacherId),
+      facultyId: Number(facultyId),
     });
 
     setName("");
     setTeacherId("");
+    setFacultyId("");
 
     router.push("/Dashboard/class/view");
   };
@@ -80,6 +98,20 @@ export default function AddClassPage() {
             {teachers.map((teacher) => (
               <option key={teacher.id} value={teacher.id}>
                 {teacher.name} {teacher.surname}
+              </option>
+            ))}
+          </select>
+          <select
+            className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+              value={facultyId}
+            onChange={(e) => setFacultyId(e.target.value)}
+            required
+          >
+            <option value="">Select Faculty</option>
+
+            {faculties.map((faculty) => (
+              <option key={faculty.id} value={faculty.id}>
+                {faculty.facultyName}
               </option>
             ))}
           </select>

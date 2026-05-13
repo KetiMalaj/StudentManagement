@@ -18,7 +18,7 @@ export async function POST(request: Request) {
       },
     });
 
-    return Response.json(newClass, { status: 201 });
+return Response.json(newClass, { status: 201 });
   } catch (error: unknown) {
     if (error instanceof Error && "code" in error && (error as { code: string }).code === "P2002") {
       return Response.json(
@@ -26,6 +26,20 @@ export async function POST(request: Request) {
         { status: 409 }
       );
     }
+    throw error;
+  }
+}
+
+export async function GET() {
+  try {
+    const assignedTeacherIds = await prisma.teacher.findMany({
+      where: {
+        class: null
+      }
+    })
+  
+    return Response.json(assignedTeacherIds);
+  } catch (error: unknown) {
     throw error;
   }
 }

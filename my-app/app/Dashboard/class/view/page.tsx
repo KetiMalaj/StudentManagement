@@ -57,6 +57,10 @@ export default function ClassViewPage() {
     router.push(`/Dashboard/class/edit?id=${id}`);
   };
 
+  const goToShowClass = (id: number) => {
+  router.push(`/Dashboard/class/show?id=${id}`);
+};
+
   return (
     <div className="min-h-screen bg-gray-100 flex">
       <Sidebar />
@@ -87,6 +91,13 @@ export default function ClassViewPage() {
             <td className="p-3">{classItem.name}</td>
             <td className="p-3">{classItem.teacher?.name}</td>
             <td className="p-3">
+              <button
+                onClick={() => goToShowClass(classItem.id)}
+                className="bg-violet-700 text-white px-4 py-1 rounded-md hover:bg-violet-900 transition mr-2"
+              >
+                Show
+              </button>
+
               <button
                 onClick={() => goToEditClass(classItem.id)}
                 className="bg-yellow-400 text-white px-4 py-1 rounded-md hover:bg-yellow-500 transition"

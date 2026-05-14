@@ -1,3 +1,4 @@
+
 "use client";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -25,20 +26,12 @@ export default function EditClassPage() {
     if (!id) return;
 
     axios
-      .get(`/api/Dashboard/class/edit?id=${id}`)
+      .get(`/api/Dashboard/class/edit?classId=${id}`)
       .then(function (response) {
-        setName(response.data.name);
-        setTeacherId(String(response.data.teacherId));
-        setFacultyId(String(response.data.facultyId));
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
-    axios
-      .get("/api/Dashboard/teacher/view")
-      .then(function (response) {
-        setTeachers(response.data);
+        setName(response.data.schoolClass.name);
+        setTeacherId(String(response.data.schoolClass.teacherId));
+        setFacultyId(String(response.data.schoolClass.facultyId));
+        setTeachers(response.data.availableTeachers);
       })
       .catch(function (error) {
         console.log(error);
@@ -56,7 +49,7 @@ export default function EditClassPage() {
   const handleEditClass = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await axios.put("/api/Dashboard/class/edit", {
+    await axios.post("/api/Dashboard/class/edit", {
       id,
       name,
       teacherId: Number(teacherId),

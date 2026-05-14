@@ -2,6 +2,7 @@
 import Sidebar from "@/components/sidebar";
 import Chart from "@/components/Chart";
 import GpaChart from "@/components/gpachart";
+import SeedButton from "@/components/SeedButton";
 
 export default function Home() {
   return (
@@ -9,6 +10,7 @@ export default function Home() {
       <Sidebar />
 
       <main className="flex-1 p-6">
+        <SeedButton />
         <h2 className="text-2xl font-bold mb-4">Students per Class</h2>
         <Chart />
 

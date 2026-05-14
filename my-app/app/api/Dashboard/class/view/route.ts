@@ -4,6 +4,12 @@ export async function GET() {
   const classes = await prisma.schoolClass.findMany({
     include: {
       teacher: true,
+      faculty: true,
+      students: {
+        include: {
+          student: true,
+        },
+      },
     },
   });
 

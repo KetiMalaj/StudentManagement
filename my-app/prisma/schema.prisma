@@ -51,8 +51,13 @@ model Teacher {
 model SchoolClass {
   id        Int            @id @default(autoincrement())
   name      String
-  teacherId Int @unique
-  teacher   Teacher @relation(fields: [teacherId], references: [id])
+
+  teacherId Int            @unique
+  teacher   Teacher        @relation(fields: [teacherId], references: [id])
+
+  facultyId Int?
+  faculty   Faculty?       @relation(fields: [facultyId], references: [id])
+
   students  StudentClass[]
 
   @@map("Class")
@@ -69,9 +74,10 @@ model StudentClass {
 }
 
 model Faculty {
-  id          Int       @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   facultyName String
   facultyHead String
 
   students    student[]
+  classes     SchoolClass[]
 }

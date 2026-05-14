@@ -18,6 +18,7 @@ export async function GET(request: Request) {
     },
     include: {
       teacher: true,
+      faculty: true,
     },
   });
 
@@ -25,14 +26,7 @@ export async function GET(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const { id, name, teacherId } = await request.json();
-
-  if (!id || !name || !teacherId) {
-    return Response.json(
-      { error: "Id, name and teacherId are required" },
-      { status: 400 }
-    );
-  }
+  const { id, name, teacherId, facultyId } = await request.json();
 
   const updatedClass = await prisma.schoolClass.update({
     where: {
@@ -41,6 +35,7 @@ export async function PUT(request: Request) {
     data: {
       name,
       teacherId: Number(teacherId),
+      facultyId: facultyId ? Number(facultyId) : null,
     },
   });
 

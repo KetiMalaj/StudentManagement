@@ -52,6 +52,10 @@ export default function FacultyViewPage() {
     router.push(`/Dashboard/faculty/edit?id=${id}`);
   };
 
+  const goToShowFaculty = (id: number) => {
+  router.push(`/Dashboard/faculty/show?id=${id}`);
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex">
       <Sidebar />
@@ -89,6 +93,13 @@ export default function FacultyViewPage() {
                   <td className="p-3">{faculty.facultyName}</td>
                   <td className="p-3">{faculty.facultyHead}</td>
                   <td className="p-3">
+                    <button
+                      onClick={() => goToShowFaculty(faculty.id)}
+                      className="bg-violet-800 text-white px-4 py-1 rounded-md hover:bg-violet-900 transition mr-2"
+                    >
+                       Show
+                    </button>
+
                     <button
                       onClick={() => goToEditFaculty(faculty.id)}
                       className="bg-yellow-400 text-white px-4 py-1 rounded-md hover:bg-yellow-500 transition"

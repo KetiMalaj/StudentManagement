@@ -5,6 +5,20 @@ import axios from "axios";
 import Sidebar from "@/components/sidebar";
 import { useRouter } from "next/navigation";
 
+type Student = {
+  id: number;
+  name: string;
+  surname: string;
+  gpa?: number | null;
+};
+
+type StudentClass = {
+  id: number;
+  studentId: number;
+  classId: number;
+  student: Student;
+};
+
 type Teacher = {
   id: number;
   name: string;
@@ -16,6 +30,7 @@ type ClassType = {
   name: string;
   teacherId: number;
   teacher?: Teacher;
+  students: StudentClass[];
 };
 
 export default function ClassViewPage() {
@@ -73,6 +88,8 @@ export default function ClassViewPage() {
           <th className="p-3 rounded-tl-lg">ID</th>
           <th className="p-3">Name</th>
           <th className="p-3">Teacher</th>
+          <th className="p-3">Average Gpa</th>
+          <th className="p-3 ">Median Gpa</th>
           <th className="p-3 rounded-tr-lg">Actions</th>
         </tr>
       </thead>
@@ -86,6 +103,37 @@ export default function ClassViewPage() {
             <td className="p-3">{classItem.id}</td>
             <td className="p-3">{classItem.name}</td>
             <td className="p-3">{classItem.teacher?.name}</td>
+            <td className="p-3">
+              {classItem.students.length > 0 ? (
+                (classItem.students.reduce((sum, studentClass) => 
+                  sum + (studentClass.student.gpa || 0), 0) / classItem.students.length).toFixed(2)
+              ) : (
+                "No students"
+              )}
+            </td>
+            <td className="p-3">
+              {classItem.students.length > 0 ? (
+                 (() => {
+                    const gpas = classItem.students
+                      .map((item) => item.student.gpa)
+                      .filter((gpa) => gpa !== null && gpa !== undefined)
+                      .sort((a, b) => a - b);
+
+                      if (gpas.length === 0) {
+                        return "No GPA";
+                      }
+
+                        const middle = Math.floor(gpas.length / 2);
+
+                        if (gpas.length % 2 === 1) {
+                          return gpas[middle].toFixed(2);
+                        }
+                        return ((gpas[middle - 1] + gpas[middle]) / 2).toFixed(2);
+                        })()
+                      ) : (
+                        "No GPA"
+                      )}
+            </td>
             <td className="p-3">
               <button
                 onClick={() => goToShowClass(classItem.id)}

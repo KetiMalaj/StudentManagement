@@ -11,10 +11,11 @@ datasource db {
   provider = "sqlite"
 }
 
-model user{
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
+model user {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+  role     String @default("user")
 }
 
 model student {

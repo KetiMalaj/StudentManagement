@@ -13,10 +13,14 @@ type Faculty = {
 
 export default function FacultyViewPage() {
   const [faculties, setFaculties] = useState<Faculty[]>([]);
+  const [role, setRole] = useState("");
 
   const router = useRouter();
 
   useEffect(() => {
+    const savedRole = localStorage.getItem("role");
+    setRole(savedRole || "");
+
     axios
       .get("/api/Dashboard/faculty/view")
       .then((response) => {
@@ -53,7 +57,7 @@ export default function FacultyViewPage() {
   };
 
   const goToShowFaculty = (id: number) => {
-  router.push(`/Dashboard/faculty/show?id=${id}`);
+    router.push(`/Dashboard/faculty/show?id=${id}`);
   };
 
   return (
@@ -62,14 +66,18 @@ export default function FacultyViewPage() {
 
       <main className="flex-1 p-10">
         <div className="flex justify-between items-center mb-10">
-          <h2 className="text-2xl font-bold text-gray-800">Faculties</h2>
+          <h2 className="text-2xl font-bold text-gray-800">
+            Faculties
+          </h2>
 
-          <button
-            onClick={goToAddFaculty}
-            className="bg-violet-800 text-white px-4 py-2 rounded"
-          >
-            Add Faculty
-          </button>
+          {role === "admin" && (
+            <button
+              onClick={goToAddFaculty}
+              className="bg-violet-800 text-white px-4 py-2 rounded"
+            >
+              Add Faculty
+            </button>
+          )}
         </div>
 
         <div className="bg-white rounded-xl shadow-md p-6 w-full max-w-4xl">
@@ -92,27 +100,32 @@ export default function FacultyViewPage() {
                   <td className="p-3">{faculty.id}</td>
                   <td className="p-3">{faculty.facultyName}</td>
                   <td className="p-3">{faculty.facultyHead}</td>
+
                   <td className="p-3">
                     <button
                       onClick={() => goToShowFaculty(faculty.id)}
-                      className="bg-violet-800 text-white px-4 py-1 rounded-md hover:bg-violet-900 transition mr-2"
+                      className="bg-violet-800 text-white px-4 py-1 rounded-md hover:bg-violet-900 transition"
                     >
-                       Show
+                      Show
                     </button>
 
-                    <button
-                      onClick={() => goToEditFaculty(faculty.id)}
-                      className="bg-yellow-400 text-white px-4 py-1 rounded-md hover:bg-yellow-500 transition"
-                    >
-                      Edit
-                    </button>
+                    {role === "admin" && (
+                      <>
+                        <button
+                          onClick={() => goToEditFaculty(faculty.id)}
+                          className="bg-yellow-400 text-white px-4 py-1 rounded-md hover:bg-yellow-500 transition ml-2"
+                        >
+                          Edit
+                        </button>
 
-                    <button
-                      onClick={() => handleDeleteFaculty(faculty.id)}
-                      className="bg-red-600 text-white px-4 py-1 rounded-md hover:bg-red-700 transition ml-2"
-                    >
-                      Delete
-                    </button>
+                        <button
+                          onClick={() => handleDeleteFaculty(faculty.id)}
+                          className="bg-red-600 text-white px-4 py-1 rounded-md hover:bg-red-700 transition ml-2"
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
                   </td>
                 </tr>
               ))}

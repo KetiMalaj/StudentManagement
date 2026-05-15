@@ -9,7 +9,7 @@ type Student = {
   id: number;
   name: string;
   surname: string;
-  gpa?: number|null;
+  gpa?: number | null;
   faculty?: {
     id: number;
     facultyName: string;
@@ -25,9 +25,14 @@ type Student = {
 
 export default function StudentViewPage() {
   const [students, setStudents] = useState<Student[]>([]);
+  const [role, setRole] = useState("");
+
   const router = useRouter();
 
   useEffect(() => {
+    const savedRole = localStorage.getItem("role");
+    setRole(savedRole || "");
+
     axios
       .get("/api/Dashboard/student/view")
       .then((response) => {
@@ -55,10 +60,6 @@ export default function StudentViewPage() {
     setStudents(response.data);
   };
 
-  const goToAddStudent = () => {
-    router.push("/Dashboard/Student/add");
-  };
-
   const goToEditStudent = (id: number) => {
     router.push(`/Dashboard/Student/edit?id=${id}`);
   };
@@ -68,62 +69,76 @@ export default function StudentViewPage() {
       <Sidebar />
 
       <main className="flex-1 p-10">
-      <div className="bg-white rounded-xl shadow-md p-6 w-full max-w-4xl">
-      <h2 className="text-2xl font-bold text-violet-800 mb-6">
-      Students
-      </h2>
+        <div className="bg-white rounded-xl shadow-md p-6 w-full max-w-4xl">
+          <h2 className="text-2xl font-bold text-violet-800 mb-6">
+            Students
+          </h2>
 
-    <table className="w-full text-left border-collapse">
-      <thead>
-        <tr className="bg-violet-800 text-white">
-          <th className="p-3 rounded-tl-lg">ID</th>
-          <th className="p-3">Name</th>
-          <th className="p-3">Surname</th>
-          <th className="p-3">GPA</th>
-          <th className="p-3">Faculty</th>
-          <th className="p-3">Class</th>
-          <th className="p-3 rounded-tr-lg">Actions</th>
-          
-        </tr>
-      </thead>
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-violet-800 text-white">
+                <th className="p-3 rounded-tl-lg">ID</th>
+                <th className="p-3">Name</th>
+                <th className="p-3">Surname</th>
+                <th className="p-3">GPA</th>
+                <th className="p-3">Faculty</th>
+                <th className="p-3">Class</th>
 
-      <tbody>
-        {students.map((student) => (
-          <tr
-            key={student.id}
-            className="border-b hover:bg-violet-50 transition"
-          >
-            <td className="p-3">{student.id}</td>
-            <td className="p-3">{student.name}</td>
-            <td className="p-3">{student.surname}</td>
-            <td className="p-3">{student.gpa ?? "No GPA"}</td>
-            <td className="p-3">
-              {student.faculty ? student.faculty.facultyName : "Not assigned"}
-            </td>
-            <td className="p-3">
-              {student.classes?.length > 0 ? student.classes[0].class.name : "Not assigned"}
-            </td>
-            <td className="p-3">
-              <button
-                onClick={() => goToEditStudent(student.id)}
-                className="bg-yellow-400 text-white px-4 py-1 rounded-md hover:bg-yellow-500 transition"
-              >
-                Edit
-              </button>
+                {role === "admin" && (
+                  <th className="p-3 rounded-tr-lg">Actions</th>
+                )}
+              </tr>
+            </thead>
 
-              <button
-                onClick={() => handleDelete(student.id)}
-                className="bg-red-600 text-white px-4 py-1 rounded-md hover:bg-red-700 transition ml-2"
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-</main>
+            <tbody>
+              {students.map((student) => (
+                <tr
+                  key={student.id}
+                  className="border-b hover:bg-violet-50 transition"
+                >
+                  <td className="p-3">{student.id}</td>
+
+                  <td className="p-3">{student.name}</td>
+
+                  <td className="p-3">{student.surname}</td>
+
+                  <td className="p-3">{student.gpa ?? "No GPA"}</td>
+
+                  <td className="p-3">
+                    {student.faculty
+                      ? student.faculty.facultyName
+                      : "Not assigned"}
+                  </td>
+
+                  <td className="p-3">
+                    {student.classes?.length > 0
+                      ? student.classes[0].class.name
+                      : "Not assigned"}
+                  </td>
+
+                  {role === "admin" && (
+                    <td className="p-3">
+                      <button
+                        onClick={() => goToEditStudent(student.id)}
+                        className="bg-yellow-400 text-white px-4 py-1 rounded-md hover:bg-yellow-500 transition"
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        onClick={() => handleDelete(student.id)}
+                        className="bg-red-600 text-white px-4 py-1 rounded-md hover:bg-red-700 transition ml-2"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </main>
     </div>
   );
 }

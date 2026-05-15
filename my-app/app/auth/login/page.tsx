@@ -18,7 +18,7 @@ const Login = () => {
   const sendToRegister = () => {
     router.push("/auth/register");
   };
-
+  
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -30,6 +30,8 @@ const Login = () => {
       .then(function (response) {
         document.cookie = `token=${response.data.token}; path=/;`;
         localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', response.data.user);
+        localStorage.setItem('role', response.data.role);
         router.refresh();
         router.push('/Dashboard');
       })

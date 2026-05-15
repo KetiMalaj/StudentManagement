@@ -21,9 +21,9 @@ export async function POST(request: Request) {
             return Response.json({ error: "Invalid password" }, { status: 401 });
         }
 
-        const token = await signToken({ email: user.email, id: user.id });
+        const token = await signToken({ email: user.email, id: user.id, role: user.role });
 
-        return Response.json({ token });
+        return Response.json({ token, role: user.role });
     } catch (error) {
         console.error("Login error:", error);
         return Response.json({ error: "Internal server error" }, { status: 500 });

@@ -4,7 +4,7 @@ export function useRole() {
   const [role, setRole] = useState("");
 
   useEffect(() => {
-    fetch("/api/auth/me")
+    fetch("/api/auth/roleverify")
       .then((res) => res.json())
       .then((data) => setRole(data.role || ""));
   }, []);

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Sidebar from "@/components/sidebar";
 import { useRouter } from "next/navigation";
+import { useRole } from "@/app/lib/useRole";
 
 type Student = {
   id: number;
@@ -34,14 +35,11 @@ type ClassType = {
 
 export default function ClassViewPage() {
   const [classes, setClasses] = useState<ClassType[]>([]);
-  const [role, setRole] = useState("");
+  const role = useRole();
 
   const router = useRouter();
 
   useEffect(() => {
-    const savedRole = localStorage.getItem("role");
-    setRole(savedRole || "");
-
     axios
       .get("/api/Dashboard/class/view")
       .then(function (response) {

@@ -1,20 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useRole } from "@/app/lib/useRole";
 
 export default function Sidebar() {
   const router = useRouter();
-  const [role, setRole] = useState("");
-
-  useEffect(() => {
-    const savedRole = localStorage.getItem("role");
-    setRole(savedRole || "");
-  }, []);
+  const role = useRole();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("role");
 
     document.cookie = "token=; path=/; max-age=0";
 

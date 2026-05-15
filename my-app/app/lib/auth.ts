@@ -6,7 +6,7 @@ export const getJwtSecretKey = () => {
     return new TextEncoder().encode(secret);
   };
 
-  export const signToken = async (payload: { email: string; id: number }) => {
+  export const signToken = async (payload: { email: string; id: number; role: string }) => {
     return new SignJWT(payload)
       .setProtectedHeader({ alg: "HS256" })
       .setExpirationTime("24h")

@@ -20,6 +20,8 @@ export default function GpaChart() {
       .then((result) => setData(result));
   }, []);
 
+  if (data.length === 0) return null;
+
   return (
     <div className="w-full h-[300px] bg-white rounded-2xl p-4">
       <ResponsiveContainer width="100%" height="100%">

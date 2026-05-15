@@ -11,7 +11,8 @@
       "Bash(ls -la /c/Users/Admin/Desktop/\"Bufii worker menagment sistem\"/Keti-Drini/my-app/*.json /c/Users/Admin/Desktop/\"Bufii worker menagment sistem\"/Keti-Drini/my-app/*.config.*)",
       "Bash(mkdir:*)",
       "Bash(taskkill:*)",
-      "Bash(netstat -ano)"
+      "Bash(netstat -ano)",
+      "Bash(grep -E \"\\\\.\\(ts|js|tsx|jsx\\)$\")"
     ]
   }
 }

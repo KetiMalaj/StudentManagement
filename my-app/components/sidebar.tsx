@@ -95,7 +95,7 @@ export default function Sidebar() {
             </button>
 
             <button
-              onClick={() => router.push("/Dashboard/teacher/add")}
+              onClick={() => router.push("/Dashboard/Teacher/add")}
               className="text-left pl-4 hover:text-violet-700 transition"
             >
               Add Teacher

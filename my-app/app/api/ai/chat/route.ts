@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
-import { raiseStudentGPA } from "@/lib/student";
+import { raiseStudentGPA, lowerStudentGPA } from "@/lib/student";
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
@@ -42,7 +42,7 @@ Rules:
 - If the user asks how to add/edit/delete something, explain which page/button to use.
 - If the user asks for admin actions, say that Add/Edit/Delete are available only for admin users.
 - Keep answers short and beginner friendly.
-- You can also raise a student's GPA when asked.
+- You can also raise or lower a student's GPA when asked.
 
 User question:
 ${message}
@@ -69,6 +69,24 @@ ${message}
                   required: ["studentName", "amount"],
                 },
               },
+              {
+                name: "lower_student_gpa",
+                description: "Lower a student's GPA by a given amount",
+                parameters: {
+                  type: "OBJECT",
+                  properties: {
+                    studentName: {
+                      type: "STRING",
+                      description: "The first name of the student",
+                    },
+                    amount: {
+                      type: "NUMBER",
+                      description: "The amount to subtract from the GPA",
+                    },
+                  },
+                  required: ["studentName", "amount"],
+                },
+              },
             ],
           },
         ],
@@ -82,6 +100,22 @@ ${message}
     if (call?.name === "raise_student_gpa") {
       try {
         const result = await raiseStudentGPA(
+          call.args.studentName,
+          call.args.amount
+        );
+        return NextResponse.json({
+          reply: `Done! ${result.name} ${result.surname}'s GPA is now ${result.gpa}.`,
+        });
+      } catch (err: any) {
+        return NextResponse.json({
+          reply: `Could not update GPA: ${err.message}`,
+        });
+      }
+    }
+
+    if (call?.name === "lower_student_gpa") {
+      try {
+        const result = await lowerStudentGPA(
           call.args.studentName,
           call.args.amount
         );

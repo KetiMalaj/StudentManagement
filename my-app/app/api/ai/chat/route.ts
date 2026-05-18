@@ -130,12 +130,19 @@ ${message}
       }
     }
 
+    // If there was an unhandled function call, don't try response.text (it throws)
+    if (call) {
+      return NextResponse.json({
+        reply: "Sorry, I couldn't perform that action.",
+      });
+    }
+
     // Normal text response
     return NextResponse.json({
       reply: response.text,
     });
   } catch (error) {
-    console.log(error);
+    console.log("AI chat error:", error);
 
     return NextResponse.json(
       { error: "AI assistant failed" },

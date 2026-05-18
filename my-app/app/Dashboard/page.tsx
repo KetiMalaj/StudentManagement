@@ -3,6 +3,7 @@ import Sidebar from "@/components/sidebar";
 import Chart from "@/components/Chart";
 import GpaChart from "@/components/gpachart";
 import SeedButton from "@/components/SeedButton";
+import ChatBox from "@/components/ChatBox";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
 
         <h2 className="text-2xl font-bold mb-4 mt-6">Average GPA per Class</h2>
         <GpaChart />
+        <ChatBox />
       </main>
     </div>
   );

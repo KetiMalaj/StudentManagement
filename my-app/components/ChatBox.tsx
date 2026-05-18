@@ -35,7 +35,7 @@ export default function ChatBox() {
     try {
       const role = localStorage.getItem("role");
 
-      const actionResponse = await axios.post("/api/ai/action", {
+      const actionResponse = await axios.post("/api/ai/actions", {
         message: userMessage,
       });
 

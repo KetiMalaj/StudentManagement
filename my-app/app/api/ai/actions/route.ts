@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, Type } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
 import { raiseStudentGPA, lowerStudentGPA } from "@/app/lib/student";
 
@@ -34,14 +34,14 @@ ${message}
                 name: "raise_student_gpa",
                 description: "Raise a student's GPA by a given amount",
                 parameters: {
-                  type: "OBJECT",
+                  type: Type.OBJECT,
                   properties: {
                     studentName: {
-                      type: "STRING",
+                      type: Type.STRING,
                       description: "The first name of the student",
                     },
                     amount: {
-                      type: "NUMBER",
+                      type: Type.NUMBER,
                       description: "The amount to add to the GPA",
                     },
                   },
@@ -52,14 +52,14 @@ ${message}
                 name: "lower_student_gpa",
                 description: "Lower a student's GPA by a given amount",
                 parameters: {
-                  type: "OBJECT",
+                  type: Type.OBJECT,
                   properties: {
                     studentName: {
-                      type: "STRING",
+                      type: Type.STRING,
                       description: "The first name of the student",
                     },
                     amount: {
-                      type: "NUMBER",
+                      type: Type.NUMBER,
                       description: "The amount to subtract from the GPA",
                     },
                   },
@@ -72,43 +72,42 @@ ${message}
       },
     });
 
-    // Check if Gemini wants to call a function
     const call =
       response.candidates?.[0]?.content?.parts?.[0]?.functionCall;
+    const args = call?.args as { studentName: string; amount: number } | undefined;
 
-    if (call?.name === "raise_student_gpa") {
+    if (call?.name === "raise_student_gpa" && args) {
       try {
         const result = await raiseStudentGPA(
-          call.args.studentName,
-          call.args.amount
+          args.studentName,
+          args.amount
         );
         return NextResponse.json({
           reply: `Done! ${result.name} ${result.surname}'s GPA is now ${result.gpa}.`,
         });
-      } catch (err: any) {
+      } catch (err) {
         return NextResponse.json({
-          reply: `Could not update GPA: ${err.message}`,
+          reply: `Could not update GPA: ${err instanceof Error ? err.message : "Unknown error"}`,
         });
       }
     }
 
-    if (call?.name === "lower_student_gpa") {
+    if (call?.name === "lower_student_gpa" && args) {
       try {
         const result = await lowerStudentGPA(
-          call.args.studentName,
-          call.args.amount
+          args.studentName,
+          args.amount
         );
         return NextResponse.json({
           reply: `Done! ${result.name} ${result.surname}'s GPA is now ${result.gpa}.`,
         });
-      } catch (err: any) {
+      } catch (err) {
         return NextResponse.json({
-          reply: `Could not update GPA: ${err.message}`,
+          reply: `Could not update GPA: ${err instanceof Error ? err.message : "Unknown error"}`,
         });
       }
     }
 
-    // Normal text response
     return NextResponse.json({
       reply: response.text,
     });

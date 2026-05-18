@@ -35,3 +35,45 @@ export async function lowerStudentGPA(studentName: string, amount: number) {
 
   return updated;
 }
+
+export async function addStudent(name: string, surname: string, gpa?: number) {
+  const student = await prisma.student.create({
+    data: {
+      name,
+      surname,
+      gpa: gpa ?? null,
+    },
+  });
+
+  return student;
+}
+
+export async function editStudent(
+  id: number,
+  name: string,
+  surname: string,
+  gpa?: number
+) {
+  const student = await prisma.student.update({
+    where: {
+      id: Number(id),
+    },
+    data: {
+      name,
+      surname,
+      gpa: gpa ?? null,
+    },
+  });
+
+  return student;
+}
+
+export async function deleteStudent(id: number) {
+  const student = await prisma.student.delete({
+    where: {
+      id: Number(id),
+    },
+  });
+
+  return student;
+}

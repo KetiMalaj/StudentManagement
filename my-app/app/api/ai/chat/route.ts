@@ -1,6 +1,6 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
-import { raiseStudentGPA, lowerStudentGPA } from "@/app/lib/student";
+import { raiseStudentGPA, lowerStudentGPA, addStudent, editStudent, deleteStudent } from "@/app/lib/student";
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
@@ -87,6 +87,68 @@ ${message}
                   required: ["studentName", "amount"],
                 },
               },
+              {
+  name: "add_student",
+  description: "Add a new student with name, surname, and optional GPA",
+  parameters: {
+    type: Type.OBJECT,
+    properties: {
+      name: {
+        type: Type.STRING,
+        description: "The first name of the student",
+      },
+      surname: {
+        type: Type.STRING,
+        description: "The surname of the student",
+      },
+      gpa: {
+        type: Type.NUMBER,
+        description: "The GPA of the student",
+      },
+    },
+    required: ["name", "surname"],
+  },
+},
+        {
+        name: "edit_student",
+        description: "Edit an existing student by id",
+        parameters: {
+            type: Type.OBJECT,
+            properties: {
+            id: {
+                type: Type.NUMBER,
+                description: "The id of the student",
+            },
+            name: {
+                type: Type.STRING,
+                description: "The new first name of the student",
+            },
+            surname: {
+                type: Type.STRING,
+                description: "The new surname of the student",
+            },
+            gpa: {
+                type: Type.NUMBER,
+                description: "The new GPA of the student",
+            },
+            },
+            required: ["id", "name", "surname"],
+        },
+        },
+        {
+        name: "delete_student",
+        description: "Delete a student by id",
+        parameters: {
+            type: Type.OBJECT,
+            properties: {
+            id: {
+                type: Type.NUMBER,
+                description: "The id of the student to delete",
+            },
+            },
+            required: ["id"],
+        },
+        },
             ],
           },
         ],
@@ -129,8 +191,76 @@ ${message}
         });
       }
     }
+    if (call?.name === "add_student" && call.args) {
+  const args = call.args as {
+    name: string;
+    surname: string;
+    gpa?: number;
+  };
 
-    // If there was an unhandled function call, don't try response.text (it throws)
+  try {
+    const result = await addStudent(args.name, args.surname, args.gpa);
+
+    return NextResponse.json({
+      reply: `Done! Student ${result.name} ${result.surname} was added successfully.`,
+    });
+  } catch (err) {
+    return NextResponse.json({
+      reply: `Could not add student: ${
+        err instanceof Error ? err.message : "Unknown error"
+      }`,
+    });
+  }
+}
+
+if (call?.name === "edit_student" && call.args) {
+  const args = call.args as {
+    id: number;
+    name: string;
+    surname: string;
+    gpa?: number;
+  };
+
+  try {
+    const result = await editStudent(
+      args.id,
+      args.name,
+      args.surname,
+      args.gpa
+    );
+
+    return NextResponse.json({
+      reply: `Done! Student ${result.name} ${result.surname} was updated successfully.`,
+    });
+  } catch (err) {
+    return NextResponse.json({
+      reply: `Could not edit student: ${
+        err instanceof Error ? err.message : "Unknown error"
+      }`,
+    });
+  }
+}
+
+if (call?.name === "delete_student" && call.args) {
+  const args = call.args as {
+    id: number;
+  };
+
+  try {
+    const result = await deleteStudent(args.id);
+
+    return NextResponse.json({
+      reply: `Done! Student ${result.name} ${result.surname} was deleted successfully.`,
+    });
+  } catch (err) {
+    return NextResponse.json({
+      reply: `Could not delete student: ${
+        err instanceof Error ? err.message : "Unknown error"
+      }`,
+    });
+  }
+}
+
     if (call) {
       return NextResponse.json({
         reply: "Sorry, I couldn't perform that action.",

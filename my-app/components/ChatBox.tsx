@@ -33,6 +33,42 @@ export default function ChatBox() {
     setLoading(true);
 
     try {
+      const role = localStorage.getItem("role");
+
+      const actionResponse = await axios.post("/api/ai/action", {
+        message: userMessage,
+      });
+
+      if (actionResponse.data.reply) {
+        const isActionMessage =
+          userMessage.toLowerCase().includes("add") ||
+          userMessage.toLowerCase().includes("edit") ||
+          userMessage.toLowerCase().includes("delete") ||
+          userMessage.toLowerCase().includes("raise") ||
+          userMessage.toLowerCase().includes("lower");
+
+        if (isActionMessage && role !== "admin") {
+          setMessages((prev) => [
+            ...prev,
+            {
+              sender: "ai",
+              text: "Only admins can add, edit, delete, raise, or lower student data.",
+            },
+          ]);
+
+          setLoading(false);
+          return;
+        }
+
+        setMessages((prev) => [
+          ...prev,
+          { sender: "ai", text: actionResponse.data.reply },
+        ]);
+
+        setLoading(false);
+        return;
+      }
+
       const response = await axios.post("/api/ai/chat", {
         message: userMessage,
       });
@@ -67,9 +103,7 @@ export default function ChatBox() {
               <div
                 key={index}
                 className={
-                  message.sender === "user"
-                    ? "text-right"
-                    : "text-left"
+                  message.sender === "user" ? "text-right" : "text-left"
                 }
               >
                 <div
@@ -84,9 +118,7 @@ export default function ChatBox() {
               </div>
             ))}
 
-            {loading && (
-              <p className="text-sm text-gray-500">Thinking...</p>
-            )}
+            {loading && <p className="text-sm text-gray-500">Thinking...</p>}
           </div>
 
           <div className="p-3 border-t flex gap-2">

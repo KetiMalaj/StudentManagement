@@ -1,6 +1,4 @@
-import { PrismaClient } from "@prisma/client";                                                                                           
-
-  const prisma = new PrismaClient();
+import { prisma } from "@/app/lib/prisma";
 
   export async function raiseStudentGPA(studentName: string, amount: number) {
     const student = await prisma.student.findFirst({

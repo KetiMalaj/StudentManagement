@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import axios from "axios";
 import Sidebar from "@/components/sidebar";
 import { useRouter } from "next/navigation";
 import { useRole } from "@/app/lib/useRole";
+import { getDeans, deleteDean } from "@/app/services/deanService";
 
 type Dean = {
   id: number;
@@ -19,14 +19,9 @@ export default function DeanViewPage() {
   const router = useRouter();
 
   useEffect(() => {
-    axios
-      .get("/api/Dashboard/dean/view")
-      .then(function (response) {
-        setDeans(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    getDeans()
+      .then((data) => setDeans(data))
+      .catch((error) => console.log(error));
   }, []);
 
   const handleDeleteDean = async (id: number) => {
@@ -34,14 +29,9 @@ export default function DeanViewPage() {
 
     if (!confirmDelete) return;
 
-    await axios.delete("/api/Dashboard/dean/view", {
-      data: {
-        id,
-      },
-    });
-
-    const response = await axios.get("/api/Dashboard/dean/view");
-    setDeans(response.data);
+    await deleteDean(id);
+    const data = await getDeans();
+    setDeans(data);
   };
 
   const goToEditDean = (id: number) => {

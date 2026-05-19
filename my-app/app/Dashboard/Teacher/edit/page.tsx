@@ -1,9 +1,9 @@
 "use client";
-import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import { editTeacher, getTeacherById } from "@/app/services/teacherService";
     
 export default function Edit() {
     const [name, setName] = useState("");
@@ -17,12 +17,10 @@ export default function Edit() {
     useEffect(() => {
       if (!id) return;
   
-      axios
-        .get(`/api/Dashboard/teacher/edit?id=${id}`)
-        .then(function (response) {
-          setName(response.data.name);
-          setSurname(response.data.surname);
-        })
+      getTeacherById(id).then((teacher) => {
+        setName(teacher.name);
+        setSurname(teacher.surname);
+      })
         .catch(function (error) {
           console.log(error);
         });
@@ -31,11 +29,7 @@ export default function Edit() {
     const handleEditTeacher = async (e: React.FormEvent) => {
       e.preventDefault();
   
-      await axios.put("/api/Dashboard/teacher/edit", {
-        id,
-        name,
-        surname,
-      });
+    await editTeacher({ id, name, surname });
   
       router.push("/Dashboard/Teacher/view");
     };

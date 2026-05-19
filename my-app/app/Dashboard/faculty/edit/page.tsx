@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
+import { getFacultyById, editFaculty } from "@/app/services/facultyService";
 
 export default function EditFacultyPage() {
   const [facultyName, setFacultyName] = useState("");
@@ -16,11 +16,10 @@ export default function EditFacultyPage() {
   useEffect(() => {
     if (!id) return;
 
-    axios
-      .get(`/api/Dashboard/faculty/edit?id=${id}`)
-      .then((response) => {
-        setFacultyName(response.data.facultyName);
-        setFacultyHead(response.data.facultyHead);
+    getFacultyById(id)
+      .then((data) => {
+        setFacultyName(data.facultyName);
+        setFacultyHead(data.facultyHead);
       })
       .catch((error) => {
         console.log(error);
@@ -30,11 +29,7 @@ export default function EditFacultyPage() {
   const handleEditFaculty = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await axios.put("/api/Dashboard/faculty/edit", {
-      id,
-      facultyName,
-      facultyHead,
-    });
+    await editFaculty(id, { facultyName, facultyHead });
 
     router.push("/Dashboard/faculty/view");
   };

@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import axios from "axios";
 import Sidebar from "@/components/sidebar";
 import { useRouter } from "next/navigation";
 import { useRole } from "@/app/lib/useRole";
+import { getClasses, deleteClass } from "@/app/services/classService";
 
 type Student = {
   id: number;
@@ -40,14 +40,9 @@ export default function ClassViewPage() {
   const router = useRouter();
 
   useEffect(() => {
-    axios
-      .get("/api/Dashboard/class/view")
-      .then(function (response) {
-        setClasses(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    getClasses()
+      .then((data) => setClasses(data))
+      .catch((error) => console.log(error));
   }, []);
 
   const handleDeleteClass = async (id: number) => {
@@ -55,14 +50,9 @@ export default function ClassViewPage() {
 
     if (!confirmDelete) return;
 
-    await axios.delete("/api/Dashboard/class/view", {
-      data: {
-        id,
-      },
-    });
-
-    const response = await axios.get("/api/Dashboard/class/view");
-    setClasses(response.data);
+    await deleteClass(id);
+    const data = await getClasses();
+    setClasses(data);
   };
 
   const goToEditClass = (id: number) => {

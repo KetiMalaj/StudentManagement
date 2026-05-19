@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import axios from "axios";
 import Sidebar from "@/components/sidebar";
 import { useRouter } from "next/navigation";
 import { useRole } from "@/app/lib/useRole";
+import { getFaculties, deleteFaculty } from "@/app/services/facultyService";
 
 type Faculty = {
   id: number;
@@ -19,14 +19,9 @@ export default function FacultyViewPage() {
   const router = useRouter();
 
   useEffect(() => {
-    axios
-      .get("/api/Dashboard/faculty/view")
-      .then((response) => {
-        setFaculties(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    getFaculties()
+      .then((data) => setFaculties(data))
+      .catch((error) => console.log(error));
   }, []);
 
   const handleDeleteFaculty = async (id: number) => {
@@ -36,14 +31,9 @@ export default function FacultyViewPage() {
 
     if (!confirmDelete) return;
 
-    await axios.delete("/api/Dashboard/faculty/view", {
-      data: {
-        id,
-      },
-    });
-
-    const response = await axios.get("/api/Dashboard/faculty/view");
-    setFaculties(response.data);
+    await deleteFaculty(id);
+    const data = await getFaculties();
+    setFaculties(data);
   };
 
   const goToAddFaculty = () => {

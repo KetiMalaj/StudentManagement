@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import { addFaculty } from "@/app/services/facultyService";
 
 export default function AddFacultyPage() {
   const [facultyName, setFacultyName] = useState("");
@@ -13,10 +13,7 @@ export default function AddFacultyPage() {
   const handleAddFaculty = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await axios.post("/api/Dashboard/faculty/add", {
-      facultyName,
-      facultyHead,
-    });
+    await addFaculty({ facultyName, facultyHead });
 
     setFacultyName("");
     setFacultyHead("");

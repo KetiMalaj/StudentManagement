@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import { addDean } from "@/app/services/deanService";
 
 export default function AddDeanPage() {
   const [name, setName] = useState("");
@@ -13,10 +13,7 @@ export default function AddDeanPage() {
   const handleAddDean = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await axios.post("/api/Dashboard/dean/add", {
-      name,
-      surname,
-    });
+    await addDean({ name, surname });
 
     setName("");
     setSurname("");

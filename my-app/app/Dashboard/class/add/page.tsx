@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { addClass } from "@/app/services/classService";
+import { getFaculties } from "@/app/services/facultyService";
 
 type Teacher = {
   id: number;
@@ -37,21 +39,17 @@ export default function AddClassPage() {
     axios
       .get("/api/Dashboard/class/add")
       .then(function (response) {
-        setTeachers(response.data);     
+        setTeachers(response.data);
       });
-    axios.get("/api/Dashboard/faculty/view").then((response) => {
-      setFaculties(response.data);
+    getFaculties().then((data) => {
+      setFaculties(data);
     });
   }, []);
 
   const handleAddClass = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await axios.post("/api/Dashboard/class/add", {
-      name,
-      teacherId: Number(teacherId),
-      facultyId: Number(facultyId),
-    });
+    await addClass({ name, teacherId, facultyId });
 
     setName("");
     setTeacherId("");

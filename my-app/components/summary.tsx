@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { getDashboardSummary } from "@/app/services/dashboardService";
 
 type SummaryData = {
   totalStudents: number;
@@ -16,10 +16,9 @@ export default function Summary() {
   const [summary, setSummary] = useState<SummaryData | null>(null);
 
   useEffect(() => {
-    axios
-      .get("/api/Dashboard/summary")
-      .then((response) => {
-        setSummary(response.data);
+    getDashboardSummary()
+      .then((data) => {
+        setSummary(data);
       })
       .catch((error) => {
         console.log(error);
@@ -48,7 +47,7 @@ export default function Summary() {
           {summary ? summary.totalClasses : "..."}
         </h3>
       </div>
-        
+
       <div className="bg-white rounded-xl shadow-md p-6">
         <p className="text-gray-500 text-sm">Faculties</p>
         <h3 className="text-3xl font-bold text-violet-800">

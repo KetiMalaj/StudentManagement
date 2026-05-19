@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Footer from "@/components/footer";
 import { useRouter, useSearchParams } from "next/navigation";
+import { getDeanById, editDean } from "@/app/services/deanService";
 
 export default function EditDeanPage() {
   const [name, setName] = useState("");
@@ -17,13 +17,12 @@ export default function EditDeanPage() {
   useEffect(() => {
     if (!id) return;
 
-    axios
-      .get(`/api/Dashboard/dean/edit?id=${id}`)
-      .then(function (response) {
-        setName(response.data.name);
-        setSurname(response.data.surname);
+    getDeanById(id)
+      .then((data) => {
+        setName(data.name);
+        setSurname(data.surname);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
       });
   }, [id]);
@@ -31,11 +30,7 @@ export default function EditDeanPage() {
   const handleEditDean = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await axios.put("/api/Dashboard/dean/edit", {
-      id,
-      name,
-      surname,
-    });
+    await editDean({ id, name, surname });
 
     router.push("/Dashboard/dean/view");
   };

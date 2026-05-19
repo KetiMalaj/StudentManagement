@@ -2,6 +2,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { addTeacher, } from "@/app/services/teacherService";
 
 export default function Teacher() {
     const [name, setName] = useState("");
@@ -18,10 +19,7 @@ export default function Teacher() {
                 surname,
             });
         } else {
-            await axios.post("/api/Dashboard/teacher/add", {
-                name,
-                surname,
-            });
+            await addTeacher({ name, surname });
         }
         router.push("/Dashboard/Teacher/view");
     };

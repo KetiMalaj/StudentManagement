@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useRole } from "@/app/lib/useRole";
+import { getTeachers, deleteTeacher } from "@/app/services/teacherService";
 
 type Teacher = {
   id: number;
@@ -19,11 +20,9 @@ export default function TeacherViewPage() {
   const router = useRouter();
 
   useEffect(() => {
-    axios
-      .get("/api/Dashboard/teacher/view")
-      .then((response) => {
-        setTeachers(response.data);
-      })
+    getTeachers().then((data) => {
+      setTeachers(data);
+    })
       .catch((error) => {
         console.log(error);
       });
@@ -36,14 +35,10 @@ export default function TeacherViewPage() {
 
     if (!confirmDelete) return;
 
-    await axios.delete("/api/Dashboard/teacher/view", {
-      data: {
-        id,
-      },
-    });
+    await deleteTeacher(id);
 
-    const response = await axios.get("/api/Dashboard/teacher/view");
-    setTeachers(response.data);
+    const data = await getTeachers();
+    setTeachers(data);
   };
 
   const goToEditTeacher = (id: number) => {

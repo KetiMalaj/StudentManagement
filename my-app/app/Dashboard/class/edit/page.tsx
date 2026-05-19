@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
+import { editClass } from "@/app/services/classService";
+import { getFaculties } from "@/app/services/facultyService";
 
 type Teacher = {
   id: number;
@@ -36,25 +38,19 @@ export default function EditClassPage() {
       .catch(function (error) {
         console.log(error);
       });
-    axios
-    .get("/api/Dashboard/faculty/view")
-    .then((response) => {
-    setFaculties(response.data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    getFaculties()
+      .then((data) => {
+        setFaculties(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [id]);
 
   const handleEditClass = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await axios.post("/api/Dashboard/class/edit", {
-      id,
-      name,
-      teacherId: Number(teacherId),
-      facultyId: Number(facultyId),
-    });
+    await editClass({ id, name, teacherId, facultyId });
 
     router.push("/Dashboard/class/view");
   };

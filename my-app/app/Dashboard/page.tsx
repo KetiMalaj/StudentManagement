@@ -3,6 +3,7 @@ import Sidebar from "@/components/sidebar";
 import Chart from "@/components/Chart";
 import GpaChart from "@/components/gpachart";
 import StudentPieChart from "@/components/PieChartComponent";
+import FacultyRadarChart from "@/components/RadarChartComponent";
 import SeedButton from "@/components/SeedButton";
 import Summary from "@/components/summary";
 
@@ -12,16 +13,26 @@ export default function Home() {
       <Sidebar />
 
       <main className="flex-1 p-6">
-        
         <Summary />
-        <h2 className="text-2xl font-bold mb-4">Students per Class</h2>
-        <Chart />
 
-        <h2 className="text-2xl font-bold mb-4 mt-6">Students per Class</h2>
-        <StudentPieChart />
+        <div className="flex gap-6">
+          <div>
+            <h2 className="text-2xl font-bold mb-4">Students per Class</h2>
+            <StudentPieChart />
 
-        <h2 className="text-2xl font-bold mb-4 mt-6">Average GPA per Class</h2>
-        <GpaChart />
+            <h2 className="text-2xl font-bold mb-4 mt-6"></h2>
+            <FacultyRadarChart />
+          </div>
+
+          <div className="flex-1">
+            <h2 className="text-2xl font-bold mb-4">Students per Class</h2>
+            <Chart />
+
+            <h2 className="text-2xl font-bold mb-4 mt-6">Average GPA per Class</h2>
+            <GpaChart />
+          </div>
+        </div>
+
         <SeedButton />
       </main>
     </div>

@@ -77,7 +77,7 @@ export default function ChatBox() {
         ...prev,
         { sender: "ai", text: response.data.reply },
       ]);
-    } catch (error) {
+      } catch (error) {
       setMessages((prev) => [
         ...prev,
         {

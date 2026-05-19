@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { addStudent } from "@/app/services/studentService";
 
 type Faculty = {
   id: number;
@@ -41,7 +42,7 @@ export default function AddStudentPage() {
   const handleAddStudent = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await axios.post("/api/Dashboard/student/add", {
+    await addStudent({
       name,
       surname,
       gpa,

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { getStudents, deleteStudent } from "@/app/services/studentService";
 import Sidebar from "@/components/sidebar";
 import { useRouter } from "next/navigation";
 import { useRole } from "@/app/lib/useRole";
@@ -31,10 +31,9 @@ export default function StudentViewPage() {
   const router = useRouter();
 
   useEffect(() => {
-    axios
-      .get("/api/Dashboard/student/view")
-      .then((response) => {
-        setStudents(response.data);
+    getStudents()
+      .then((data) => {
+        setStudents(data);
       })
       .catch((error) => {
         console.log(error);
@@ -48,14 +47,10 @@ export default function StudentViewPage() {
 
     if (!confirmDelete) return;
 
-    await axios.delete("/api/Dashboard/student/view", {
-      data: {
-        id,
-      },
-    });
+    await deleteStudent(id);
 
-    const response = await axios.get("/api/Dashboard/student/view");
-    setStudents(response.data);
+    const data = await getStudents();
+    setStudents(data);
   };
 
   const goToEditStudent = (id: number) => {

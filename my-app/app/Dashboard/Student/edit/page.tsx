@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
+import { editStudent, getStudentById } from "@/app/services/studentService";
 
 type Faculty = {
   id: number;
@@ -34,16 +35,16 @@ export default function EditStudentPage() {
   useEffect(() => {
     if (!id) return;
 
-    axios.get(`/api/Dashboard/student/edit?id=${id}`).then((response) => {
-      setName(response.data.name);
-      setSurname(response.data.surname);
-      setGpa(response.data.gpa?.toString() || "");
-      if (response.data.facultyId) {
-        setFacultyId(String(response.data.facultyId));
+    getStudentById(id).then((student) => {
+      setName(student.name);
+      setSurname(student.surname);
+      setGpa(student.gpa?.toString() || "");
+      if (student.facultyId) {
+        setFacultyId(String(student.facultyId));
       }
 
-      if (response.data.classes?.length > 0) {
-        setClassId(String(response.data.classes[0].classId));
+      if (student.classes?.length > 0) {
+        setClassId(String(student.classes[0].classId));
       }
     });
 
@@ -59,7 +60,7 @@ export default function EditStudentPage() {
   const handleEditStudent = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await axios.put("/api/Dashboard/student/edit", {
+    await editStudent( {
       id,
       name,
       surname,

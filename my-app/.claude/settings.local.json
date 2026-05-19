@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p lib)",
+      "Bash(mv app/lib/student.ts lib/student.ts)"
+    ]
+  }
+}

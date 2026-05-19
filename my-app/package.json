@@ -10,7 +10,11 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@google/genai": "^2.4.0",
+    "@mui/material": "^9.0.1",
+    "@mui/x-charts": "^9.2.0",
     "@prisma/adapter-better-sqlite3": "^7.7.0",
     "@prisma/client": "^7.7.0",
     "axios": "^1.15.0",
